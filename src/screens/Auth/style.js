@@ -11,22 +11,31 @@ export const getStyle = (theme) => StyleSheet.create({
     title:{
         fontSize: 32,
         fontWeight: 'bold',
-        justifySelf: 'flex-start',
-        color: theme.text
+        alignSelf: 'center',
+        color: theme.text,
+        marginTop: 40,
     },
 
     label:{
         fontSize: 32,
+        fontWeight:'bold',
         color: theme.text
     },
 
     form: {
-        gap: 15
+        gap: 16
+    },
+
+    passwordInput:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10
     },
 
     btnLogin:{
         backgroundColor: '#007AFF',
-        padding:  15,
+        padding: 15,
         borderRadius: 8,
         justifyContent:'center',
         alignItems:'center'
@@ -36,8 +45,8 @@ export const getStyle = (theme) => StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold'
     },
-    btnForgotPW:{
-        fontSize:16,
+    btnExtra:{
+        fontSize: 16,
         color: theme.text
     }
 })

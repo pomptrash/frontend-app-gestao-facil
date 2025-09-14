@@ -1,12 +1,10 @@
-import React, {createContext, useContext, useState, useEffect} from "react";
-import { useColorScheme } from "react-native";
+import { createContext, useContext, useState, useEffect } from "react";
 import { lightColors, darkColors } from "./colors";
 
 const ThemeContext = createContext()
 
 export function ThemeProvider({children}){
-    const systemTheme = useColorScheme()
-    const [darkMode, setDarkMode] = useState(systemTheme === 'dark')
+    const [darkMode, setDarkMode] = useState('dark')
     const [theme, setTheme] = useState(darkMode? darkColors: lightColors)
 
     useEffect(()=>{

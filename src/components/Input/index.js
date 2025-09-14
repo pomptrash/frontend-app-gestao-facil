@@ -1,12 +1,12 @@
-import {View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import { style } from './style'
 
-export function Input({value, type, label, onChangeText, placeholder, color}){
+export function Input({secureTextEntry, value, type, setLabel=false, label, onChangeText, placeholder, placeHolderColor, color}){
 
     return(
         <View>
-            <Text style={{color: color}}>{label}</Text>
-            <TextInput style={style.input} placeholder={placeholder} placeholderTextColor={color}/>
+            {setLabel && (<Text style={{color: color}}>{label}</Text>)}
+            <TextInput value={value} keyboardType={type} style={style.input} placeholder={placeholder} placeholderTextColor={placeHolderColor} color={color} onChangeText={onChangeText} secureTextEntry={secureTextEntry}/>
         </View>
     )
 }
