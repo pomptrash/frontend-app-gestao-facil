@@ -2,12 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Home } from "../screens/Home";
 import { Clients } from "../screens/Clients";
-import { Services } from "../screens/Services";
-import { ClientAssets } from "../screens/ClientAssets";
-
+import { Options } from "../screens/Options";
 
 import { Feather } from '@expo/vector-icons'
-
 import { useTheme } from "../theme/ThemeContext";
 
 const Tab = createBottomTabNavigator()
@@ -46,18 +43,8 @@ export function TabRoutes(){
         />
 
         <Tab.Screen
-          name="Ativos"
-          component={ClientAssets}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <Feather name="layers" color={color} size={size} />
-            ),
-          }}
-        />
-
-        <Tab.Screen
-          name="Serviços"
-          component={Services}
+          name="Options"
+          component={Options}
           options={{
             tabBarIcon: ({ size, color }) => (
               <Feather name="tool" color={color} size={size} />

@@ -3,15 +3,40 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "../screens/Auth/Login";
 import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
+import { ServicesOrders } from "../screens/ServicesOrders";
+import { getGlobalStyles } from "../theme/themeStyles";
+import { useTheme } from "../theme/ThemeContext";
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
-export function StackRoutes(){
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
-            <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
-            <Stack.Screen name="Home" component={TabRoutes} options={{headerShown:false}} />
-        </Stack.Navigator>
-    )
+export function StackRoutes() {
+  const { theme } = useTheme();
+  const globalStyles = getGlobalStyles(theme);
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: theme.background },
+        headerTitleStyle: { color: theme.text, fontSize: 24},
+        headerTintColor: theme.text
+      }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={TabRoutes}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="ServicesOrders" component={ServicesOrders} options={{headerTitle: "Serviços"}} />
+    </Stack.Navigator>
+  );
 }

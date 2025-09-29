@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons'
 
 export function ThemeSwitcher({onPress}){
 
-    const {darkMode, toggleTheme, theme} = useTheme()
+    const {darkMode, toggleTheme} = useTheme()
 
     return(
         <TouchableOpacity style={style.icon} onPress={()=> toggleTheme()} >
@@ -12,7 +12,6 @@ export function ThemeSwitcher({onPress}){
         </TouchableOpacity>
     )
 }
-
 
 const style = StyleSheet.create({
     icon:{

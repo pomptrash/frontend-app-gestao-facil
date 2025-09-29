@@ -4,6 +4,7 @@ export const style = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-around',
+        padding: 8
     },
     header:{
         justifyContent: 'center',
@@ -19,24 +20,6 @@ export const style = StyleSheet.create({
     clients:{
         gap: 20,
         padding: 10,
-    },
-    clientData:{
-        gap: 20,
-        justifyContent: 'space-around',
-        borderBottomWidth: 1,
-        borderRightWidth: 2,
-        borderBottomColor: '#4445',
-        borderRightColor: '#4445',
-        borderRadius: 8,
-        padding: 10,
-        marginBottom: 15
-    },
-    clientDataTitle:{
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    clientDataText:{
-        fontSize: 16
     },
     notFoundText:{
         fontSize: 16,
