@@ -4,14 +4,12 @@ import { Login } from "../screens/Auth/Login";
 import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
 import { ServicesOrders } from "../screens/ServicesOrders";
-import { getGlobalStyles } from "../theme/themeStyles";
 import { useTheme } from "../theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 
 export function StackRoutes() {
   const { theme } = useTheme();
-  const globalStyles = getGlobalStyles(theme);
 
   return (
     <Stack.Navigator

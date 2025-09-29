@@ -9,19 +9,19 @@ export const style = StyleSheet.create({
     header:{
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        marginBottom: 20
+        padding: 5,
+        marginBottom: 10
     },
     title:{
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: 'bold',
-        padding: 10
+        padding: 5
     },
     clients:{
-        gap: 20,
-        padding: 10,
+        padding: 8,
     },
     notFoundText:{
+        flex:1,
         fontSize: 16,
         fontWeight:'bold',
         textAlign:'center'

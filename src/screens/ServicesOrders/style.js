@@ -18,11 +18,10 @@ export const style = StyleSheet.create({
         padding: 10
     },
     services:{
-        gap: 20,
-        padding: 10,
+        padding: 5,
     },
     servicesData:{
-        gap: 20,
+        gap: 10,
         justifyContent: 'space-around',
         borderBottomWidth: 1,
         borderRightWidth: 2,
@@ -37,7 +36,8 @@ export const style = StyleSheet.create({
         fontWeight: 'bold',
     },
     serviceDataText:{
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: 'bold'
     },
     notFoundText:{
         fontSize: 16,

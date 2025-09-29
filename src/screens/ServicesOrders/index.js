@@ -1,29 +1,25 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useTheme } from "../../theme/ThemeContext";
-import { getGlobalStyles } from "../../theme/themeStyles";
 import { style } from "./style";
 import { Feather } from "@expo/vector-icons";
 
 export function ServicesOrders({ route }) {
   const { theme } = useTheme();
-  const globalStyles = getGlobalStyles(theme);
 
   // array de teste
   const { client } = route.params;
   const services = client.services;
-
-  console.log(services);
   return (
-    <View style={[style.container, globalStyles.background]}>
+    <View style={[style.container, { backgroundColor: theme.background }]}>
       {services.length <= 0 ? (
         <Text
           style={[
-            globalStyles.text,
             {
               textAlign: "center",
               fontSize: 24,
               fontWeight: "bold",
               padding: 8,
+              color: theme.text,
             },
           ]}
         >
@@ -31,25 +27,27 @@ export function ServicesOrders({ route }) {
         </Text>
       ) : (
         <FlatList
+          style={style.services}
           data={services}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[style.servicesData, { backgroundColor: theme.card }]}
             >
-              <Text style={[style.serviceDataTitle, globalStyles.text]}>
+              <Text style={[style.serviceDataTitle, { color: theme.text }]}>
                 <Feather name="tool" size={24} /> - {item.description}
               </Text>
-              <Text style={[style.serviceDataText, globalStyles.text]}>
+              <Text style={[style.serviceDataText, { color: theme.text }]}>
                 {item.status}
               </Text>
-              <Text style={globalStyles.text}>
+              <Text style={[style.serviceDataText, { color: theme.text }]}>
                 Ativo:{" "}
-                {
-                  client.assets.find((asset) => asset.id == item.clientAssetId)
-                    .name
-                }
+                {item.clientAssetId
+                  ? client.assets.find(
+                      (asset) => asset.id == item.clientAssetId
+                    )?.name
+                  : "Nenhum ativo associdado"}
               </Text>
-              <Text style={[style.serviceDataText, globalStyles.text]}>
+              <Text style={[style.serviceDataText, { color: theme.primary }]}>
                 Cliente: {client.name}
               </Text>
             </TouchableOpacity>

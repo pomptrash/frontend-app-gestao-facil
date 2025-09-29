@@ -1,7 +1,6 @@
 import { View, Text, KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
-import { use, useState } from "react";
 import { useTheme } from "../../../theme/ThemeContext";
 import { getStyle } from "../style";
 import { useNavigation } from "@react-navigation/native";

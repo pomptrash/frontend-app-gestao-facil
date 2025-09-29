@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
   clientData: {
-    gap: 20,
+    gap: 10,
     justifyContent: "space-around",
     borderBottomWidth: 1,
     borderRightWidth: 2,
@@ -18,5 +18,6 @@ export const style = StyleSheet.create({
   },
   clientDataText: {
     fontSize: 16,
+    fontWeight:'bold'
   }
 });
