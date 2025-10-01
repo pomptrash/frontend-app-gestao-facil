@@ -4,7 +4,7 @@ import { Login } from "../screens/Auth/Login";
 import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
 import { ServicesOrders } from "../screens/ServicesOrders";
-import { useTheme } from "../theme/ThemeContext";
+import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 

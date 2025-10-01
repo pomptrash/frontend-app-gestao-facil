@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 
-import { useTheme } from "../../theme/ThemeContext";
+import { useTheme } from "../../contexts/theme/ThemeContext";
 
 export function Options() {
   const { theme } = useTheme();

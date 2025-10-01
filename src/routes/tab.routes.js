@@ -5,7 +5,7 @@ import { Clients } from "../screens/Clients";
 import { Options } from "../screens/Options";
 
 import { Feather } from '@expo/vector-icons'
-import { useTheme } from "../theme/ThemeContext";
+import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Tab = createBottomTabNavigator()
 

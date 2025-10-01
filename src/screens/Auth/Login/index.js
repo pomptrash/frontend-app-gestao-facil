@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity} from "react-native";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useState } from "react";
-import { useTheme } from "../../../theme/ThemeContext";
+import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { getStyle } from "../style";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from '@expo/vector-icons'
