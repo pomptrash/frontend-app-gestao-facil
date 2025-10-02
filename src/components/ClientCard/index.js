@@ -13,7 +13,7 @@ export function ClientCard({ client, featherIcon, onPress }) {
       {/* badge para contagem do serviços 'em andamento' */}
       {client.services.filter((service) => service.status === "Em Andamento")
         .length > 0 && (
-        <Badge>
+        <Badge style={{position:'absolute', top: 15, right: 10}} >
           {
             client.services.filter(
               (service) => service.status === "Em Andamento"

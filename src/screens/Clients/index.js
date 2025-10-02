@@ -50,7 +50,7 @@ export function Clients() {
               client={item}
               featherIcon={"user"}
               onPress={() =>
-                navigation.navigate("ServicesOrders", { client: item })
+                navigation.navigate("ClientAssets", { client: item })
               }
             />
           )}

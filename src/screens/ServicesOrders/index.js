@@ -7,11 +7,13 @@ export function ServicesOrders({ route }) {
   const { theme } = useTheme();
 
   // array de teste
-  const { client } = route.params;
-  const services = client.services;
+  const { client } = route.params;  // listagem de clientes passada através da prop
+  const { asset } = route.params; // asset específico que chamou a navegação
+  // se a navegação foi através de um asset específico, realiza a filtragem. caso contrário, mostra todos os serviços.
+  const services = asset? client.services.filter(service => service.clientAssetId === asset.id) : client.services
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
-      {services.length <= 0 ? (
+      {services?.length <= 0 ? (
         <Text
           style={[
             {

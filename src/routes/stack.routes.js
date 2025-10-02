@@ -4,6 +4,7 @@ import { Login } from "../screens/Auth/Login";
 import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
 import { ServicesOrders } from "../screens/ServicesOrders";
+import { ClientAssets } from "../screens/ClientAssets";
 import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
@@ -15,8 +16,8 @@ export function StackRoutes() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: theme.background },
-        headerTitleStyle: { color: theme.text, fontSize: 24},
-        headerTintColor: theme.text
+        headerTitleStyle: { color: theme.text, fontSize: 24 },
+        headerTintColor: theme.text,
       }}
     >
       <Stack.Screen
@@ -34,7 +35,17 @@ export function StackRoutes() {
         component={TabRoutes}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="ServicesOrders" component={ServicesOrders} options={{headerTitle: "Serviços"}} />
+      <Stack.Screen
+        name="ServicesOrders"
+        component={ServicesOrders}
+        options={{ headerTitle: "Serviços" }}
+      />
+
+      <Stack.Screen
+        name="ClientAssets"
+        component={ClientAssets}
+        options={{ headerTitle: "Ativos" }}
+      />
     </Stack.Navigator>
   );
 }
