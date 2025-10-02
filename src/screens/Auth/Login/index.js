@@ -1,16 +1,15 @@
-import { View, Text, TouchableOpacity} from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useState } from "react";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { getStyle } from "../style";
 import { useNavigation } from "@react-navigation/native";
-import { Feather } from '@expo/vector-icons'
 
 export function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [showPassword, setShowPassword ] = useState(false)
+  const [hidePassowrd, setHidePassowrd] = useState(true);
 
   const { theme } = useTheme(); // uso do themeContext (darkMode)
   const style = getStyle(theme); // estilo global do themeContext (darkMode)
@@ -37,18 +36,11 @@ export function Login() {
             color={theme.text}
             placeHolderColor={theme.text}
             type="password"
-            secureTextEntry={!showPassword}
+            SetSecureTextEntry={true}
+            secureTextEntry={hidePassowrd}
+            setHidePassowrd={setHidePassowrd}
+            hidePassowrd={hidePassowrd}
           />
-          <TouchableOpacity>
-            <Feather
-              name={showPassword ? "eye-off" : "eye"}
-              color={theme.text}
-              size={16}
-              onPress={() => {
-                setShowPassword(!showPassword);
-              }}
-            />
-          </TouchableOpacity>
         </View>
         <Button
           btnText={"Entrar"}
