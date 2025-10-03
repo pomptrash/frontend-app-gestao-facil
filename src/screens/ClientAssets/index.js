@@ -1,6 +1,5 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { List } from "react-native-paper";
-
 import { useTheme } from "../../contexts/theme/ThemeContext";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -35,7 +34,7 @@ export function ClientAssets({ route }) {
           }
         >
           <List.Item
-            title="Todos"
+            title="Todos os serviços"
             style={{
               backgroundColor: theme.card,
               borderWidth: 1,

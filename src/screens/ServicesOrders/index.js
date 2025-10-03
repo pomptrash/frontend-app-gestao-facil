@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useTheme } from "../../contexts/theme/ThemeContext";
 import { style } from "./style";
 import { Feather } from "@expo/vector-icons";
+import { serviceStatusColors } from "./style";
 
 export function ServicesOrders({ route }) {
   const { theme } = useTheme();
@@ -38,7 +39,7 @@ export function ServicesOrders({ route }) {
               <Text style={[style.serviceDataTitle, { color: theme.text }]}>
                 <Feather name="tool" size={24} /> - {item.description}
               </Text>
-              <Text style={[style.serviceDataText, { color: theme.text }]}>
+              <Text style={[style.serviceDataText, { color: serviceStatusColors[item.status]}]}>
                 {item.status}
               </Text>
               <Text style={[style.serviceDataText, { color: theme.text }]}>
@@ -48,9 +49,6 @@ export function ServicesOrders({ route }) {
                       (asset) => asset.id == item.clientAssetId
                     )?.name
                   : "Nenhum ativo associdado"}
-              </Text>
-              <Text style={[style.serviceDataText, { color: theme.primary }]}>
-                Cliente: {client.name}
               </Text>
             </TouchableOpacity>
           )}

@@ -45,3 +45,11 @@ export const style = StyleSheet.create({
         textAlign:'center'
     }
 })
+
+export const serviceStatusColors = {
+  "Concluído": "#28A745",
+  "Em Andamento": "#FFC107",
+  "Agendado": "#007BFF",
+  "Cancelado": "#DC3545", 
+
+};
