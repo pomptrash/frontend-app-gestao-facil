@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text} from "react-native";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useState } from "react";
