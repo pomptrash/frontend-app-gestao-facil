@@ -18,7 +18,6 @@ export function Input({
   hidePassowrd,
 }) {
   const { theme } = useTheme();
-  console.log(SetSecureTextEntry)
   return (
     <View style={{flexDirection:"row", alignItems:'center'}}>
       {setLabel && <Text style={{ color: color }}>{label}</Text>}

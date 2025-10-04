@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "../screens/Auth/Login";
 import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
-import { ServicesOrders } from "../screens/ServicesOrders";
-import { ClientAssets } from "../screens/ClientAssets";
+import { ServicesOrders } from "../screens/Clients/ServicesOrders";
+import { ClientAssets } from "../screens/Clients/ClientAssets";
 import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
