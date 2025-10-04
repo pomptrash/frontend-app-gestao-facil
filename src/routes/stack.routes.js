@@ -5,6 +5,7 @@ import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
 import { ServicesOrders } from "../screens/Clients/ServicesOrders";
 import { ClientAssets } from "../screens/Clients/ClientAssets";
+import { NewServiceOrder } from "../screens/Clients/ServicesOrders/NewServiceOrder";
 import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
@@ -45,6 +46,12 @@ export function StackRoutes() {
         name="ClientAssets"
         component={ClientAssets}
         options={{ headerTitle: "Ativos" }}
+      />
+
+      <Stack.Screen
+        name="NewServiceOrder"
+        component={NewServiceOrder}
+        options={{ headerTitle: "Criar Novo Serviço" }}
       />
     </Stack.Navigator>
   );
