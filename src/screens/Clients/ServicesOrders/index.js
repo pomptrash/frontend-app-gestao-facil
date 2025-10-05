@@ -68,6 +68,14 @@ export function ServicesOrders({ route }) {
                 {item.status}
               </Text>
               <Text style={[style.serviceDataText, { color: theme.text }]}>
+                Criado em {new Date(item.createdAt).toLocaleDateString("pt-BR")}
+              </Text>
+
+              <Text style={[style.serviceDataText, { color: theme.text }]}>
+                {item.status === "Concluído" ? "Concluído em" : "Agendado para"}{" "}
+                {new Date(item.scheduledDate).toLocaleDateString("pt-BR")}
+              </Text>
+              <Text style={[style.serviceDataText, { color: theme.text }]}>
                 Ativo:{" "}
                 {item.clientAssetId
                   ? client.assets.find(

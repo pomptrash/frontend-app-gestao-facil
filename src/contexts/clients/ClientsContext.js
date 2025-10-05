@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 const ClientsContext = createContext();
 
-export function ClientsProvider({children}) {
+export function ClientsProvider({ children }) {
   const clients = [
     {
       id: "1",
@@ -32,6 +32,7 @@ export function ClientsProvider({children}) {
             "Manutenção Preventiva do Sistema de Refrigeração. Realizada limpeza dos filtros, verificação do gás refrigerante e calibração dos termostatos.",
           status: "Concluído",
           createdAt: "2025-09-10T08:00:00.000Z",
+          scheduledDate: "2025-09-11T14:30:00.000Z",
           clientId: "1",
           clientAssetId: "5",
         },
@@ -41,6 +42,7 @@ export function ClientsProvider({children}) {
             "Teste de Carga do Gerador. Verificação de performance sob carga total para simulação de falha de energia.",
           status: "Agendado",
           createdAt: "2025-09-25T10:00:00.000Z",
+          scheduledDate: "2025-10-08T09:00:00.000Z",
           clientId: "1",
           clientAssetId: "6",
         },
@@ -80,6 +82,7 @@ export function ClientsProvider({children}) {
             "Instalação de Novo Servidor. Instalação física do servidor Dell PowerEdge R750, configuração de RAID e instalação do sistema operacional.",
           status: "Em Andamento",
           createdAt: "2025-09-15T09:00:00.000Z",
+          scheduledDate: "2025-09-15T13:00:00.000Z",
           clientId: "2",
           clientAssetId: "8",
         },
@@ -89,6 +92,7 @@ export function ClientsProvider({children}) {
             "Configuração Inicial do Firewall. Setup das regras de NAT, VPN e políticas de acesso para ambiente de e-commerce.",
           status: "Em Andamento",
           createdAt: "2025-09-16T11:30:00.000Z",
+          scheduledDate: "2025-09-17T09:30:00.000Z",
           clientId: "2",
           clientAssetId: "10",
         },
@@ -98,6 +102,7 @@ export function ClientsProvider({children}) {
             "Auditoria de Rede. Mapeamento da infraestrutura de rede e análise de gargalos de tráfego.",
           status: "Agendado",
           createdAt: "2025-09-28T14:00:00.000Z",
+          scheduledDate: "2025-10-15T10:00:00.000Z",
           clientId: "2",
           clientAssetId: "9",
         },
@@ -126,6 +131,7 @@ export function ClientsProvider({children}) {
             "Troca de Baterias do Nobreak. Substituição das baterias do nobreak APC Smart-UPS 3000VA modelo SMX3000RM2U.",
           status: "Agendado",
           createdAt: "2025-09-18T14:00:00.000Z",
+          scheduledDate: "2025-10-07T11:00:00.000Z",
           clientId: "3",
           clientAssetId: "3",
         },
@@ -135,6 +141,7 @@ export function ClientsProvider({children}) {
             "Configuração de Backup de Rota. Criação de rotina de backup em nuvem para dados críticos de rastreamento.",
           status: "Concluído",
           createdAt: "2025-09-01T10:00:00.000Z",
+          scheduledDate: "2025-09-02T09:00:00.000Z",
           clientId: "3",
           clientAssetId: null,
         },
@@ -162,6 +169,7 @@ export function ClientsProvider({children}) {
             "Atualização de Software de Segurança. Atualização do antivírus para versão 5.7.3 e aplicação de patches de segurança críticos.",
           status: "Concluído",
           createdAt: "2025-09-05T10:00:00.000Z",
+          scheduledDate: "2025-09-05T11:00:00.000Z",
           clientId: "4",
           clientAssetId: "12",
         },
@@ -195,6 +203,7 @@ export function ClientsProvider({children}) {
             "Migração para Nova Plataforma Cloud. Migração dos serviços de email e armazenamento para AWS - projeto cancelado por solicitação do cliente.",
           status: "Cancelado",
           createdAt: "2025-09-20T08:00:00.000Z",
+          scheduledDate: "2025-09-20T10:00:00.000Z",
           clientId: "5",
           clientAssetId: "7",
         },
@@ -235,6 +244,7 @@ export function ClientsProvider({children}) {
             "Manutenção Corretiva no Sistema de Prontuários. Correção de falha no banco de dados e otimização de consultas.",
           status: "Concluído",
           createdAt: "2025-09-12T09:00:00.000Z",
+          scheduledDate: "2025-09-12T10:00:00.000Z",
           clientId: "6",
           clientAssetId: "11",
         },
@@ -244,6 +254,7 @@ export function ClientsProvider({children}) {
             "Atualização de Firmware do Equipamento Siemens. Aplicação de patch de segurança e atualização de drivers.",
           status: "Agendado",
           createdAt: "2025-09-29T16:00:00.000Z",
+          scheduledDate: "2025-10-10T14:00:00.000Z",
           clientId: "6",
           clientAssetId: "14",
         },
@@ -253,6 +264,7 @@ export function ClientsProvider({children}) {
             "Instalação de Novo Monitor na Recepção. Instalação de um monitor de 32 polegadas para melhor visualização.",
           status: "Em Andamento",
           createdAt: "2025-09-27T10:00:00.000Z",
+          scheduledDate: "2025-09-28T09:00:00.000Z",
           clientId: "6",
           clientAssetId: "16",
         },
@@ -305,6 +317,7 @@ export function ClientsProvider({children}) {
             "Otimização de Workstation. Upgrade de memória RAM e instalação de placa de vídeo NVIDIA RTX A6000.",
           status: "Concluído",
           createdAt: "2025-09-08T15:00:00.000Z",
+          scheduledDate: "2025-09-09T09:00:00.000Z",
           clientId: "8",
           clientAssetId: "17",
         },
@@ -314,6 +327,7 @@ export function ClientsProvider({children}) {
             "Configuração de Backup Automático. Criação de rotina de backup semanal do NAS para storage externo.",
           status: "Agendado",
           createdAt: "2025-09-30T10:00:00.000Z",
+          scheduledDate: "2025-10-12T13:00:00.000Z",
           clientId: "8",
           clientAssetId: "18",
         },
@@ -323,6 +337,7 @@ export function ClientsProvider({children}) {
             "Suporte Técnico Remoto. Resolução de problemas de licença de software de edição.",
           status: "Concluído",
           createdAt: "2025-09-22T11:00:00.000Z",
+          scheduledDate: "2025-09-22T11:30:00.000Z",
           clientId: "8",
           clientAssetId: null,
         },
@@ -370,6 +385,7 @@ export function ClientsProvider({children}) {
             "Manutenção Preventiva nos PDVs. Limpeza de hardware e verificação de software em todas as caixas.",
           status: "Em Andamento",
           createdAt: "2025-09-25T08:00:00.000Z",
+          scheduledDate: "2025-09-26T08:00:00.000Z",
           clientId: "9",
           clientAssetId: "19",
         },
@@ -379,6 +395,7 @@ export function ClientsProvider({children}) {
             "Ajuste e Calibração de Câmeras de Segurança. Reajuste de ângulo e foco em 10 câmeras no setor de hortifruti.",
           status: "Agendado",
           createdAt: "2025-10-01T14:00:00.000Z",
+          scheduledDate: "2025-10-18T14:00:00.000Z",
           clientId: "9",
           clientAssetId: "20",
         },
@@ -419,6 +436,7 @@ export function ClientsProvider({children}) {
             "Expansão de Storage do Cluster. Adição de mais 5TB de armazenamento no SAN para o cluster de virtualização.",
           status: "Em Andamento",
           createdAt: "2025-09-28T09:00:00.000Z",
+          scheduledDate: "2025-09-30T09:00:00.000Z",
           clientId: "10",
           clientAssetId: "23",
         },
@@ -428,6 +446,7 @@ export function ClientsProvider({children}) {
             "Auditoria de Segurança (Pentest). Teste de penetração externo na API de pagamentos.",
           status: "Agendado",
           createdAt: "2025-10-05T10:00:00.000Z",
+          scheduledDate: "2025-10-22T10:00:00.000Z",
           clientId: "10",
           clientAssetId: null,
         },
@@ -437,6 +456,7 @@ export function ClientsProvider({children}) {
             "Manutenção na Unidade de Fita. Limpeza do cabeçote e testes de leitura/escrita.",
           status: "Concluído",
           createdAt: "2025-09-19T14:00:00.000Z",
+          scheduledDate: "2025-09-19T16:00:00.000Z",
           clientId: "10",
           clientAssetId: "24",
         },
@@ -446,6 +466,7 @@ export function ClientsProvider({children}) {
             "Atualização de Firmware do Switch Core. Aplicação de patch de segurança no switch Juniper.",
           status: "Concluído",
           createdAt: "2025-09-02T16:00:00.000Z",
+          scheduledDate: "2025-09-03T10:00:00.000Z",
           clientId: "10",
           clientAssetId: "25",
         },
@@ -454,12 +475,12 @@ export function ClientsProvider({children}) {
   ];
 
   return (
-    <ClientsContext.Provider value={{clients}}>
+    <ClientsContext.Provider value={{ clients }}>
       {children}
     </ClientsContext.Provider>
   );
 }
 
-export function useClients(){
-    return useContext(ClientsContext)
+export function useClients() {
+  return useContext(ClientsContext);
 }
