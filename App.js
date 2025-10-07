@@ -10,9 +10,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <ClientsProvider>
-            <PaperProvider>
               <Routes />
-            </PaperProvider>
           </ClientsProvider>
         </SafeAreaView>
         <ThemeSwitcher />

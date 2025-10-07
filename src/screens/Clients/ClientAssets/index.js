@@ -30,6 +30,7 @@ export function ClientAssets({ route }) {
             navigation.navigate("ServicesOrders", {
               client,
               assets: client.assets,
+              AllServices: true
             })
           }
         >

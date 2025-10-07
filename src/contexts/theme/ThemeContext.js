@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { lightColors, darkColors } from "./colors";
+import { PaperProvider } from "react-native-paper";
 
 const ThemeContext = createContext()
 
@@ -16,9 +17,11 @@ export function ThemeProvider({children}){
     }
     
     return(
-        <ThemeContext.Provider value={{theme, darkMode, toggleTheme}}>
-            {children}
-        </ThemeContext.Provider>
+        <PaperProvider theme={theme}>
+            <ThemeContext.Provider value={{ paperTheme: theme, theme: theme.colors, darkMode, toggleTheme }}>
+                {children}
+            </ThemeContext.Provider>
+        </PaperProvider>
 
     )
 }

@@ -15,25 +15,29 @@ export function ServicesOrders({ route }) {
   const services = asset
     ? client.services.filter((service) => service.clientAssetId === asset.id)
     : client.services;
+
+  const { AllServices } = route.params; // condição para que o botão de criar novo serviço só esteja disponível se a navegação for através de um ativo específico
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
-      <TouchableOpacity
-        style={{
-          backgroundColor: theme.primary,
-          borderRadius: 25,
-          width: 50,
-          height: 50,
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          bottom: 25,
-          right: 25,
-          zIndex: 10,
-        }}
-        onPress={() => navigation.navigate("NewServiceOrder")}
-      >
-        <Feather name="plus" size={32} color={"white"} />
-      </TouchableOpacity>
+      {!AllServices && (
+        <TouchableOpacity
+          style={{
+            backgroundColor: theme.primary,
+            borderRadius: 25,
+            width: 50,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 25,
+            right: 25,
+            zIndex: 10,
+          }}
+          onPress={() => navigation.navigate("NewServiceOrder", { asset })}
+        >
+          <Feather name="plus" size={32} color={"white"} />
+        </TouchableOpacity>
+      )}
       {services?.length <= 0 ? (
         <Text
           style={[
