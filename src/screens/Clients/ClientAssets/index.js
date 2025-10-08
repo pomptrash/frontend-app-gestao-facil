@@ -3,11 +3,18 @@ import { List } from "react-native-paper";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Input } from "../../../components/Input";
+import { useState } from "react";
 
 export function ClientAssets({ route }) {
   const navigation = useNavigation();
+  const [searchAsset, setSearchAsset] = useState("");
+
   const { theme } = useTheme();
   const { client } = route.params; // lista de clientes passada através da navegação
+  const filteredAssets = client.assets.filter((asset) =>
+    asset.name.toLowerCase().includes(searchAsset.toLowerCase())
+  );
   return (
     <View
       style={{
@@ -19,33 +26,43 @@ export function ClientAssets({ route }) {
         title="Listar serviços por ativos"
         titleStyle={{ color: theme.text, fontWeight: "bold", fontSize: 24 }}
         style={{
-          backgroundColor: theme.card,
           borderWidth: 1,
           borderColor: theme.border,
           padding: 8,
         }}
       >
+        <View style={{ margin: "auto", padding: 8 }}>
+          <Input
+            value={searchAsset}
+            onChangeText={setSearchAsset}
+            placeholder={"Buscar Ativo"}
+            color={theme.text}
+            placeHolderColor={theme.text}
+          />
+        </View>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("ServicesOrders", {
               client,
               assets: client.assets,
-              AllServices: true
+              AllServices: true,
             })
           }
         >
           <List.Item
             title="Todos os serviços"
-            style={{
-              backgroundColor: theme.card,
-              borderWidth: 1,
+            titleStyle={{
+              fontWeight: "bold",
+              borderBottomWidth: 1,
               borderColor: theme.border,
+              padding: 8,
+              width: 300,
+              margin: "auto",
             }}
-            titleStyle={{ color: theme.text, fontWeight: "bold", textAlign:'center'}}
           />
         </TouchableOpacity>
         <FlatList
-          data={client.assets}
+          data={filteredAssets}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
@@ -54,12 +71,14 @@ export function ClientAssets({ route }) {
             >
               <List.Item
                 title={item.name}
-                style={{
-                  backgroundColor: theme.card,
-                  borderWidth: 1,
+                titleStyle={{
+                  fontWeight: "bold",
+                  borderBottomWidth: 1,
                   borderColor: theme.border,
+                  padding: 8,
+                  width: 300,
+                  margin: "auto",
                 }}
-                titleStyle={{ color: theme.text, fontWeight: "bold", textAlign:'center' }}
               />
             </TouchableOpacity>
           )}
