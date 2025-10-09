@@ -1,24 +1,28 @@
-import { View, Text, KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { getStyle } from "../style";
 import { useNavigation } from "@react-navigation/native";
-import { Feather } from '@expo/vector-icons'
 import { useState } from "react";
 
 export function SignUp() {
-  const [name, setName] = useState()
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const [position, setPosition] = useState()
-  const [phone, setPhone] = useState()
+  const [position, setPosition] = useState();
+  const [phone, setPhone] = useState();
   const [password, setPassword] = useState();
-  const [showPassword, setShowPassword] = useState(false)
+  const [hidePassowrd, setHidePassowrd] = useState(true);
 
   const { theme } = useTheme(); // uso do themeContext (darkMode)
   const style = getStyle(theme); // estilo global do themeContext (darkMode)
 
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   return (
     <KeyboardAvoidingView
@@ -70,11 +74,11 @@ export function SignUp() {
               color={theme.text}
               placeHolderColor={theme.text}
               type="password"
-              secureTextEntry={!showPassword}
+              SetSecureTextEntry={true}
+              secureTextEntry={hidePassowrd}
+              setHidePassowrd={setHidePassowrd}
+              hidePassowrd={hidePassowrd}
             />
-            <TouchableOpacity>
-              <Feather name={showPassword? "eye-off": "eye"} color={theme.text} size={16} onPress={()=> {setShowPassword(!showPassword)}}/>
-            </TouchableOpacity>
           </View>
 
           <Button
