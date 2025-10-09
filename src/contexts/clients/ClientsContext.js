@@ -17,12 +17,14 @@ export function ClientsProvider({ children }) {
           name: "Sistema de Refrigeração Central",
           description: "Unidade de ar condicionado central do data center",
           serialNumber: "REFRIG-SYS-005",
+          clientId: "1",
         },
         {
           id: "6",
           name: "Gerador de Energia Cummins",
           description: "Gerador de backup para o prédio",
           serialNumber: "CUMMINS-GEN-006",
+          clientId: "1",
         },
       ],
       services: [
@@ -61,18 +63,21 @@ export function ClientsProvider({ children }) {
           name: "Servidor Dell PowerEdge R750",
           description: "Novo servidor para a plataforma de e-commerce",
           serialNumber: "DELL-PER-008",
+          clientId: "2",
         },
         {
           id: "9",
           name: "Switch Cisco Catalyst 9300",
           description: "Switch de rede principal",
           serialNumber: "CISCO-C9300-009",
+          clientId: "2",
         },
         {
           id: "10",
           name: "Firewall FortiGate 60F",
           description: "Equipamento de segurança de borda",
           serialNumber: "FTG-60F-010",
+          clientId: "2",
         },
       ],
       services: [
@@ -122,6 +127,7 @@ export function ClientsProvider({ children }) {
           description:
             "Nobreak principal que atende os servidores de logística",
           serialNumber: "APC-SMART-003",
+          clientId: "3",
         },
       ],
       services: [
@@ -160,6 +166,7 @@ export function ClientsProvider({ children }) {
           name: "Estação de Trabalho Meteorológica",
           description: "Computador que processa dados de clima e solo",
           serialNumber: "AGRO-WS-012",
+          clientId: "4",
         },
       ],
       services: [
@@ -188,12 +195,14 @@ export function ClientsProvider({ children }) {
           name: "Servidor de Arquivos Principal",
           description: "Servidor onde ficam os projetos e orçamentos",
           serialNumber: "SVR-FILES-007",
+          clientId: "5",
         },
         {
           id: "15",
           name: "Impressora 3D de Grande Formato",
           description: "Utilizada para prototipagem de projetos de construção",
           serialNumber: "3D-PRINT-015",
+          clientId: "5",
         },
       ],
       services: [
@@ -223,18 +232,21 @@ export function ClientsProvider({ children }) {
           description:
             "Servidor principal para o sistema de prontuários médicos",
           serialNumber: "HP-PE-011",
+          clientId: "6",
         },
         {
           id: "14",
           name: "Equipamento de Diagnóstico Siemens",
           description: "Equipamento para exames de imagem",
           serialNumber: "SIEMENS-DX-014",
+          clientId: "6",
         },
         {
           id: "16",
           name: "Estação de Trabalho da Recepção",
           description: "Computador para agendamentos e cadastro",
           serialNumber: "RECEP-PC-016",
+          clientId: "6",
         },
       ],
       services: [
@@ -283,6 +295,7 @@ export function ClientsProvider({ children }) {
           name: "Drone DJI Phantom 4 Pro",
           description: "Utilizado para inspeção de painéis solares em campo",
           serialNumber: "DJI-PH4-013",
+          clientId: "7",
         },
       ],
       services: [],
@@ -301,6 +314,7 @@ export function ClientsProvider({ children }) {
           description:
             "Máquina principal para edição de vídeo e renderização 3D",
           serialNumber: "DELL-PR-017",
+          clientId: "8",
         },
         {
           id: "18",
@@ -308,6 +322,7 @@ export function ClientsProvider({ children }) {
           description:
             "Armazenamento compartilhado de alta velocidade para projetos",
           serialNumber: "SYN-NAS-018",
+          clientId: "8",
         },
       ],
       services: [
@@ -357,6 +372,7 @@ export function ClientsProvider({ children }) {
           description:
             "Servidor que gerencia todas as caixas registradoras (PDVs)",
           serialNumber: "PDV-SVR-019",
+          clientId: "9",
         },
         {
           id: "20",
@@ -364,18 +380,21 @@ export function ClientsProvider({ children }) {
           description:
             "Gravador de vídeo digital (DVR) para câmeras de segurança",
           serialNumber: "DVR-SEC-020",
+          clientId: "9",
         },
         {
           id: "21",
           name: "Impressora Fiscal Epson TM-T88V",
           description: "Impressora de cupom fiscal da loja 1",
           serialNumber: "EPSON-FIS-021",
+          clientId: "9",
         },
         {
           id: "22",
           name: "Ponto de Acesso Wi-Fi Cisco Meraki",
           description: "Ponto de acesso para rede de funcionários",
           serialNumber: "MERAKI-AP-022",
+          clientId: "9",
         },
       ],
       services: [
@@ -415,18 +434,21 @@ export function ClientsProvider({ children }) {
           description:
             "Conjunto de hosts ESXi para virtualização crítica de serviços bancários",
           serialNumber: "VMW-ESX-023",
+          clientId: "10",
         },
         {
           id: "24",
           name: "Unidade de Fita LTO-8",
           description: "Equipamento para backup de longo prazo",
           serialNumber: "LTO-UNIT-024",
+          clientId: "10",
         },
         {
           id: "25",
           name: "Switch Core Juniper EX9200",
           description: "Switch de núcleo da rede",
           serialNumber: "JUNIPER-EX-025",
+          clientId: "10",
         },
       ],
       services: [
@@ -473,7 +495,6 @@ export function ClientsProvider({ children }) {
       ],
     },
   ];
-
   return (
     <ClientsContext.Provider value={{ clients }}>
       {children}

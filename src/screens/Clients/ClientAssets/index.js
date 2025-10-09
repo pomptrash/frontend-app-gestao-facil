@@ -1,10 +1,11 @@
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { List } from "react-native-paper";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "../../../components/Input";
 import { useState } from "react";
+import { Feather } from "@expo/vector-icons";
 
 export function ClientAssets({ route }) {
   const navigation = useNavigation();
@@ -22,6 +23,27 @@ export function ClientAssets({ route }) {
         backgroundColor: theme.background,
       }}
     >
+      <TouchableOpacity
+        style={{
+          backgroundColor: theme.primary,
+          borderRadius: 25,
+          height: 50,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 25,
+          right: 25,
+          zIndex: 10,
+          padding: 8,
+        }}
+        onPress={() => navigation.navigate("NewAsset", { client })}
+      >
+        <Feather name="plus" size={32} color={"white"} />
+        <Text style={{ color: theme.text, fontWeight: "bold" }}>
+          Criar Ativo
+        </Text>
+      </TouchableOpacity>
       <List.Accordion
         title="Listar serviços por ativos"
         titleStyle={{ color: theme.text, fontWeight: "bold", fontSize: 24 }}

@@ -24,18 +24,22 @@ export function ServicesOrders({ route }) {
           style={{
             backgroundColor: theme.primary,
             borderRadius: 25,
-            width: 50,
             height: 50,
+            flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
             position: "absolute",
             bottom: 25,
             right: 25,
             zIndex: 10,
+            padding: 8,
           }}
           onPress={() => navigation.navigate("NewServiceOrder", { asset })}
         >
-          <Feather name="plus" size={32} color={"white"} />
+          <Feather name="plus" size={32} color={"white"} />{" "}
+          <Text style={{ color: theme.text, fontWeight: "bold" }}>
+            Criar Serviço
+          </Text>
         </TouchableOpacity>
       )}
       {services?.length <= 0 ? (
@@ -50,7 +54,7 @@ export function ServicesOrders({ route }) {
             },
           ]}
         >
-          Cliente não possui serviços associados
+          Cliente não possui serviços associados para o ativo: {asset.name}
         </Text>
       ) : (
         <FlatList

@@ -37,7 +37,7 @@ export function NewServiceOrder({ route }) {
         }}
       >
         Cliente: {client.name} {""}
-        Ativo: {asset.name}
+        / Ativo: {asset.name}
       </Text>
       <Input
         onChangeText={setDescription}
