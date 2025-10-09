@@ -36,12 +36,13 @@ export function ClientAssets({ route }) {
           right: 25,
           zIndex: 10,
           padding: 8,
+          gap: 8,
         }}
         onPress={() => navigation.navigate("NewAsset", { client })}
       >
         <Feather name="plus" size={32} color={"white"} />
-        <Text style={{ color: theme.text, fontWeight: "bold" }}>
-          Criar Ativo
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>
+          Adicionar Ativo
         </Text>
       </TouchableOpacity>
       <List.Accordion

@@ -33,11 +33,12 @@ export function ServicesOrders({ route }) {
             right: 25,
             zIndex: 10,
             padding: 8,
+            gap: 8,
           }}
           onPress={() => navigation.navigate("NewServiceOrder", { asset })}
         >
-          <Feather name="plus" size={32} color={"white"} />{" "}
-          <Text style={{ color: theme.text, fontWeight: "bold" }}>
+          <Feather name="plus" size={32} color={"white"} />
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>
             Criar Serviço
           </Text>
         </TouchableOpacity>
