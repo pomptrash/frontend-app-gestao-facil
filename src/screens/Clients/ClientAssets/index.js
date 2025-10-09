@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Input } from "../../../components/Input";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
+import { th } from "react-native-paper-dates";
 
 export function ClientAssets({ route }) {
   const navigation = useNavigation();
@@ -46,12 +47,17 @@ export function ClientAssets({ route }) {
         </Text>
       </TouchableOpacity>
       <List.Accordion
-        title="Listar serviços por ativos"
-        titleStyle={{ color: theme.text, fontWeight: "bold", fontSize: 24 }}
+        title="Listar serviços por ativo"
+        titleStyle={{ color: theme.text, fontWeight: "bold", fontSize: 16 }}
         style={{
           borderWidth: 1,
           borderColor: theme.border,
+          borderRadius:8,
           padding: 8,
+          width: 300,
+          height: 60,
+          marginTop: 16,
+          margin: "auto"
         }}
       >
         <View style={{ margin: "auto", padding: 8 }}>
