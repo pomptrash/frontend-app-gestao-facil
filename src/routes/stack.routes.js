@@ -7,6 +7,8 @@ import { ServicesOrders } from "../screens/Clients/ServicesOrders";
 import { ClientAssets } from "../screens/Clients/ClientAssets";
 import { NewServiceOrder } from "../screens/Clients/ServicesOrders/NewServiceOrder";
 import { NewAsset } from "../screens/Clients/ClientAssets/NewAsset";
+import { NewClient } from "../screens/Clients/NewClient"; 
+
 import { useTheme } from "../contexts/theme/ThemeContext";
 
 const Stack = createNativeStackNavigator();
@@ -58,7 +60,13 @@ export function StackRoutes() {
       <Stack.Screen
         name="NewAsset"
         component={NewAsset}
-        options={{headerTitle: "Criar Novo Ativo"}}
+        options={{ headerTitle: "Criar Novo Ativo" }}
+      />
+
+      <Stack.Screen
+        name="NewClient"
+        component={NewClient}
+        options={{ headerTitle: "Criar Novo Cliente" }}
       />
     </Stack.Navigator>
   );

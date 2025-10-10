@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { Input } from "../../components/Input";
 import { useTheme } from "../../contexts/theme/ThemeContext";
 import { useClients } from "../../contexts/clients/ClientsContext";
@@ -6,6 +6,7 @@ import { style } from "./style";
 import { useState } from "react";
 import { ClientCard } from "../../components/ClientCard";
 import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
 
 export function Clients() {
   const navigation = useNavigation();
@@ -22,6 +23,28 @@ export function Clients() {
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
       <Text></Text>
+      <TouchableOpacity
+        style={{
+          backgroundColor: theme.primary,
+          borderRadius: 25,
+          height: 50,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 25,
+          right: 25,
+          zIndex: 10,
+          padding: 8,
+          gap: 8,
+        }}
+        onPress={() => navigation.navigate("NewClient")}
+      >
+        <Feather name="plus" size={32} color={"white"} />
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>
+          Adicionar Cliente
+        </Text>
+      </TouchableOpacity>
       <View style={style.header}>
         <Text style={[style.title, { color: theme.text }]}>
           Gerenciamento de Clientes

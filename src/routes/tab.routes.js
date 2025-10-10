@@ -43,7 +43,7 @@ export function TabRoutes(){
         />
 
         <Tab.Screen
-          name="Options"
+          name="Opções"
           component={Options}
           options={{
             tabBarIcon: ({ size, color }) => (
