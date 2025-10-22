@@ -159,7 +159,9 @@ Endpoints esperados:
 
 **João**
 
-Preencher aui joão
+Preencher aqui
+
+
 **Érico Freitas Neto**
 Desenvolvedor Full Stack | Backend Flask e Node.js | Integrações IoT e Sistemas de Gestão
 
