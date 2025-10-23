@@ -1,6 +1,9 @@
 // service/tokenService.js - VERSÃO DEBUG
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
+
 class TokenService {
   async getToken() {
     try {
@@ -66,6 +69,26 @@ class TokenService {
     }
   }
 
+  async getUserData() {
+  try {
+    console.log('👤 tokenService - Recuperando dados do usuário...');
+    const email = await AsyncStorage.getItem('userEmail');
+    const role = await AsyncStorage.getItem('userRole');
+    const id = await AsyncStorage.getItem('userId');
+
+    const userData = {
+      id,
+      email,
+      role
+    };
+
+    console.log('📋 tokenService - Dados do usuário recuperados:', userData);
+    return userData;
+  } catch (error) {
+    console.error('❌ tokenService - Erro ao recuperar dados do usuário:', error);
+    return null;
+  }
+}
   async setAuthData(token, userData = {}) {
     try {
       console.log('💾 tokenService - Salvando dados de autenticação...');

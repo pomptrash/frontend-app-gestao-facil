@@ -6,7 +6,10 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
+
+  
   useEffect(() => {
     console.log('🔄 useAuth - Iniciando verificação...');
     checkAuth();
@@ -58,6 +61,8 @@ export const useAuth = () => {
     }
   };
 
+  
+
   const login = async (token) => {
     console.log('🔐 useAuth - Fazendo login...');
     await tokenService.setAuthData(token);
@@ -83,4 +88,7 @@ export const useAuth = () => {
     login,
     logout
   };
+
+  
+  
 };

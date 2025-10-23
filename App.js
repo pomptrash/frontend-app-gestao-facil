@@ -1,14 +1,15 @@
+// App.js
 import React from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider, useTheme } from "./src/contexts/theme/ThemeContext";
 import { ThemeSwitcher } from "./src/contexts/theme/ThemeSwitcher";
 import { ClientsProvider } from "./src/contexts/clients/ClientsContext";
+import { AuthProvider } from "./src/contexts/auth/AuthContext"; // 👈 novo import
 import { Routes } from "./src/routes";
 
 function DebugTheme() {
   const themeContext = useTheme();
-  
   console.log('Theme Context:', themeContext);
   console.log('Theme:', themeContext.theme);
   console.log('isDarkMode:', themeContext.isDarkMode);
@@ -23,7 +24,6 @@ function DebugTheme() {
 function MainApp() {
   const { theme, isDarkMode } = useTheme();
 
-  // Debug: descomente a linha abaixo para ver o que tem no theme
   // return <DebugTheme />;
 
   if (!theme) {
@@ -36,14 +36,16 @@ function MainApp() {
 
   return (
     <>
-      <StatusBar 
+      <StatusBar
         barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={theme.background}
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
-        <ClientsProvider>
-          <Routes />
-        </ClientsProvider>
+        <AuthProvider> {/* 👈 envolve tudo que depende de autenticação */}
+          <ClientsProvider>
+            <Routes />
+          </ClientsProvider>
+        </AuthProvider>
       </SafeAreaView>
       <ThemeSwitcher />
     </>
