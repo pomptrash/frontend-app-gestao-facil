@@ -1,49 +1,28 @@
-import axios from 'axios';
-import tokenService from './tokenService';
+// service/api.js
+import axios from "axios";
+import tokenService from "./tokenService";
 
-const API_BASE_URL = 'http://localhost:3000'; // Altere para seu IP local
+const API_BASE_URL = "http://localhost:3000"; // 🔧 ALTERAR para IP da rede local
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 15000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
-// Health check utility
-export const checkHealth = async () => {
-  try {
-    const response = await api.get('/health');
-    return response.data;
-  } catch (error) {
-    throw new Error('Servidor indisponível');
-  }
-};
+// Adiciona token JWT automaticamente em cada requisição
+api.interceptors.request.use(async (config) => {
+  const token = await tokenService.getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
-// Request interceptor - Adiciona token automaticamente
-api.interceptors.request.use(
-  async (config) => {
-    try {
-      const token = await tokenService.getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    } catch (error) {
-      console.warn('Erro ao adicionar token:', error);
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor - Trata erros globais
+// Limpa storage se o token for inválido (401)
 api.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   async (error) => {
     if (error.response?.status === 401) {
       await tokenService.clearAuthData();
-      // Opcional: emitir evento para redirecionar para login
     }
     return Promise.reject(error);
   }

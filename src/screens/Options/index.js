@@ -1,54 +1,131 @@
-import React from 'react';
-import { View, Text, Alert } from 'react-native';
-import { useAuth } from '../../hooks/useAuth';
-import { useTheme } from '../../contexts/theme/ThemeContext';
-import { Button } from '../../components/Button';
+import React from "react";
+import { View, Text, Alert, Platform } from "react-native";
+import { useAuthContext } from "../../contexts/auth/AuthContext";
+import { useTheme } from "../../contexts/theme/ThemeContext";
+import { Button } from "../../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export function Options() {
-    const { logout, user } = useAuth();
-    const { theme } = useTheme();
+  const { logout, user } = useAuthContext();
+  const { theme } = useTheme();
+  const navigation = useNavigation();
 
-    const handleLogout = () => {
-        Alert.alert(
-            'Sair',
-            'Tem certeza que deseja sair?',
-            [
-                { text: 'Cancelar', style: 'cancel' },
-                { 
-                    text: 'Sair', 
-                    style: 'destructive',
-                    onPress: logout
-                }
-            ]
-        );
-    };
+  console.log("🧩 [Options] Tela Perfil montada. Usuário:", user);
 
-    return (
-        <View style={{ flex: 1, padding: 20, backgroundColor: theme.background }}>
-            <Text style={{ color: theme.text, fontSize: 18, marginBottom: 20 }}>
-                Logado como: {user?.email}
-            </Text>
-            <Text style={{ color: theme.text, fontSize: 16, marginBottom: 20 }}>
-                Cargo: {user?.cargo}
-            </Text>
-            
-            {/* ✅ BUTTON COM ESTILOS CORRETOS */}
-            <Button 
-                btnText="Sair da Conta"
-                onPress={handleLogout}
-                style={{ 
-                    backgroundColor: '#FF3B30',
-                    padding: 15,
-                    borderRadius: 8,
-                    alignItems: 'center',
-                    marginTop: 10
-                }}
-                textStyle={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: 16
-                }}
-            />
-        </View>
+  const handleLogout = async () => {
+    console.log("🧭 [Options] Botão pressionado — iniciando fluxo de logout...");
+
+    // ✅ Detecta ambiente (Web ou Mobile)
+    if (Platform.OS === "web") {
+      const confirmLogout = window.confirm("Tem certeza que deseja sair da conta?");
+      if (!confirmLogout) {
+        console.log("🚫 [Options] Logout cancelado no navegador.");
+        return;
+      }
+
+      try {
+        console.log("⚙️ [Options] Executando logout() do contexto...");
+        await logout();
+        console.log("✅ [Options] Logout concluído, redirecionando para Login...");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+        });
+      } catch (error) {
+        console.error("❌ [Options] Erro ao sair:", error);
+        alert("Erro ao sair da conta.");
+      }
+      return;
+    }
+
+    // 📱 Alert nativo (funciona Android/iOS)
+    Alert.alert(
+      "Sair da conta",
+      "Tem certeza que deseja sair do aplicativo?",
+      [
+        { text: "Cancelar", style: "cancel", onPress: () => console.log("🚫 [Options] Cancelado pelo usuário") },
+        {
+          text: "Sair",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              console.log("⚙️ [Options] Executando logout() do contexto...");
+              await logout();
+              console.log("✅ [Options] Logout concluído, redirecionando para Login...");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Login" }],
+              });
+            } catch (error) {
+              console.error("❌ [Options] Erro ao sair:", error);
+              Alert.alert("Erro", "Não foi possível sair da conta.");
+            }
+          },
+        },
+      ]
     );
+  };
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        padding: 20,
+        backgroundColor: theme.background,
+        justifyContent: "space-between",
+      }}
+    >
+      <View>
+        <Text
+          style={{
+            color: theme.text,
+            fontSize: 22,
+            fontWeight: "600",
+            marginBottom: 10,
+          }}
+        >
+          Perfil do Usuário
+        </Text>
+
+        <View style={{ marginTop: 10 }}>
+          <Text style={{ color: theme.text, fontSize: 16 }}>
+            <Text style={{ fontWeight: "600" }}>E-mail: </Text>
+            {user?.email || "Não disponível"}
+          </Text>
+
+          <Text style={{ color: theme.text, fontSize: 16, marginTop: 6 }}>
+            <Text style={{ fontWeight: "600" }}>Cargo: </Text>
+            {user?.cargo || "Não informado"}
+          </Text>
+        </View>
+      </View>
+
+      <View style={{ marginBottom: 30 }}>
+        <Button
+          btnText="Sair da Conta"
+          onPress={() => {
+            console.log("🖱️ [Options] Clique detectado — chamando handleLogout()");
+            handleLogout();
+          }}
+          style={{
+            backgroundColor: "#FF3B30",
+            paddingVertical: 14,
+            borderRadius: 10,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 0, height: 2 },
+            shadowRadius: 3,
+            elevation: 3,
+          }}
+          textStyle={{
+            color: "#FFF",
+            fontWeight: "bold",
+            fontSize: 16,
+            letterSpacing: 0.5,
+          }}
+        />
+      </View>
+    </View>
+  );
 }

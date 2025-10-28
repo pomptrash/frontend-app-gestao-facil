@@ -1,7 +1,7 @@
 import { TouchableOpacity, Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Badge } from "react-native-paper";
-import { style } from "./style.";
+import { style } from "./style";
 import { useTheme } from "../../contexts/theme/ThemeContext";
 export function ClientCard({ client, featherIcon, onPress }) {
   const { theme } = useTheme(); // // uso do themeContext (darkMode)

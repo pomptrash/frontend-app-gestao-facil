@@ -1,56 +1,62 @@
+// src/routes/tab.routes.js
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { Home } from "../screens/Home";
-import { Clients } from "../screens/Clients";
-import { Options } from "../screens/Options";
-
-import { Feather } from '@expo/vector-icons'
+import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../contexts/theme/ThemeContext";
 
-const Tab = createBottomTabNavigator()
+// 🧭 Telas
+import { Home } from "../screens/Home";
+import { Clients } from "../screens/Clients";
+import { ServicesOrders } from "../screens/Clients/ServicesOrders";
+import { Options } from "../screens/Options";
 
-export function TabRoutes(){
+const Tab = createBottomTabNavigator();
 
-    const { theme } = useTheme()
+export function TabRoutes() {
+  const { theme } = useTheme();
+   console.log("🧭 TabRoutes montado");
 
-    return (
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: theme.background,
-          },
-        }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <Feather name="home" color={color} size={size} />
-            ),
-          }}
-        />
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.textSecondary,
+        tabBarStyle: {
+          backgroundColor: theme.card,
+          borderTopColor: theme.border,
+          height: 70,
+          paddingBottom: 10,
+        },
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
 
-        <Tab.Screen
-          name="Clientes"
-          component={Clients}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <Feather name="user" color={color} size={size} />
-            ),
-          }}
-        />
+          switch (route.name) {
+            case "Início":
+              iconName = "home-outline";
+              break;
+            case "Clientes":
+              iconName = "people-outline";
+              break;
+            case "Serviços":
+              iconName = "construct-outline";
+              break;
+            case "Perfil":
+              iconName = "person-circle-outline";
+              break;
+            default:
+              iconName = "ellipse-outline";
+              break;
+          }
 
-        <Tab.Screen
-          name="Opções"
-          component={Options}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <Feather name="tool" color={color} size={size} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    );
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Início" component={Home} />
+      <Tab.Screen name="Clientes" component={Clients} />
+      <Tab.Screen name="Serviços" component={ServicesOrders} />
+      <Tab.Screen name="Perfil" component={Options} />
+    </Tab.Navigator>
+  );
 }

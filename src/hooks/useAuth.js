@@ -1,94 +1,97 @@
-// hooks/useAuth.js - VERSÃO DEBUG
-import { useState, useEffect } from 'react';
-import tokenService from '../service/tokenService';
+// src/hooks/useAuth.js
+import { useState, useEffect } from "react";
+import { Platform } from "react-native";
+import tokenService from "../service/tokenService";
 
-export const useAuth = () => {
+export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
 
-
-  
+  // 🔄 Verifica autenticação inicial
   useEffect(() => {
-    console.log('🔄 useAuth - Iniciando verificação...');
+    console.log("🚀 useAuth inicializando...");
     checkAuth();
   }, []);
 
+  // 🔍 Verifica se o token é válido
   const checkAuth = async () => {
     try {
-      console.log('🔍 useAuth - Verificando token...');
-      
-      // 1. Verificar se existe token
+      setLoading(true);
       const token = await tokenService.getToken();
-      console.log('📦 useAuth - Token encontrado:', token ? 'SIM' : 'NÃO');
-      
-      if (!token) {
-        console.log('🚫 useAuth - Nenhum token, usuário NÃO autenticado');
-        setIsAuthenticated(false);
-        setUser(null);
-        setLoading(false);
-        return;
-      }
+      console.log("📦 Token encontrado:", token ? "SIM ✅" : "NÃO ❌");
 
-      console.log('🔑 useAuth - Token:', token.substring(0, 20) + '...');
-
-      // 2. Verificar se token é válido
-      const isTokenValid = await tokenService.isTokenExpired();
-      console.log('✅ useAuth - Token válido?', !isTokenValid);
-
-      if (!isTokenValid) {
-        // Token válido - usuário autenticado
-        const userData = await tokenService.getUserData();
-        console.log('👤 useAuth - Dados do usuário:', userData);
-        setIsAuthenticated(true);
-        setUser(userData);
-      } else {
-        // Token inválido - fazer logout
-        console.log('❌ useAuth - Token inválido/expirado, limpando...');
+      if (!token || !token.includes(".")) {
+        console.log("⚠️ Token ausente ou inválido. Limpando storage...");
         await tokenService.clearAuthData();
         setIsAuthenticated(false);
         setUser(null);
+        return false;
       }
 
+      const isExpired = await tokenService.isTokenExpired(token);
+      if (isExpired) {
+        console.log("⏰ Token expirado. Limpando e deslogando...");
+        await tokenService.clearAuthData();
+        setIsAuthenticated(false);
+        setUser(null);
+        return false;
+      }
+
+      const userData = await tokenService.getUserData();
+      console.log("👤 Usuário autenticado:", userData);
+      setUser(userData);
+      setIsAuthenticated(true);
+      return true;
+
     } catch (error) {
-      console.error('💥 useAuth - Erro na verificação:', error);
+      console.error("❌ Erro em checkAuth:", error);
+      await tokenService.clearAuthData();
       setIsAuthenticated(false);
       setUser(null);
+      return false;
     } finally {
-      console.log('🏁 useAuth - Verificação finalizada. Autenticado:', isAuthenticated);
       setLoading(false);
     }
   };
 
-  
-
+  // 🔐 Login
   const login = async (token) => {
-    console.log('🔐 useAuth - Fazendo login...');
-    await tokenService.setAuthData(token);
-    const userData = await tokenService.getUserData();
-    setIsAuthenticated(true);
-    setUser(userData);
-    console.log('✅ useAuth - Login realizado');
+    try {
+      console.log("🔑 Iniciando login...");
+      await tokenService.setAuthData(token);
+      const userData = await tokenService.getUserData();
+      setUser(userData);
+      setIsAuthenticated(true);
+      console.log("✅ Login concluído com sucesso:", userData);
+    } catch (error) {
+      console.error("❌ Erro ao realizar login:", error);
+    }
   };
 
+  // 🚪 Logout
   const logout = async () => {
-    console.log('🚪 useAuth - Fazendo logout...');
-    await tokenService.clearAuthData();
-    setIsAuthenticated(false);
-    setUser(null);
-    console.log('✅ useAuth - Logout realizado');
+    try {
+      console.log("🚪 Logout iniciado...");
+      if (Platform.OS === "web") {
+        console.log("🌐 Limpando localStorage...");
+        localStorage.clear();
+      }
+      await tokenService.clearAuthData();
+      setUser(null);
+      setIsAuthenticated(false);
+      console.log("✅ Logout finalizado. Estado limpo.");
+    } catch (error) {
+      console.error("❌ Erro no logout:", error);
+    }
   };
 
-  return { 
-    isAuthenticated, 
-    user, 
-    loading, 
-    checkAuth,
+  return {
+    user,
+    isAuthenticated,
+    loading,
     login,
-    logout
+    logout,
+    checkAuth,
   };
-
-  
-  
-};
+}

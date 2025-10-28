@@ -1,139 +1,80 @@
-// service/tokenService.js - VERSÃO DEBUG
+// service/tokenService.js — versão estável final
+import { decode as atob } from 'base-64';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const KEYS = ["userToken", "userEmail", "userRole", "userId"];
 
-
+async function debugDump(label) {
+  try {
+    const entries = await Promise.all(KEYS.map(async k => [k, await AsyncStorage.getItem(k)]));
+    console.log(`📦 [tokenService] ${label}`, Object.fromEntries(entries));
+  } catch {}
+}
 
 class TokenService {
   async getToken() {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      console.log('🔑 tokenService - Token no storage:', token ? `EXISTE (${token.length} chars)` : 'NÃO EXISTE');
-      return token;
-    } catch (error) {
-      console.error('❌ tokenService - Erro ao obter token:', error);
-      return null;
-    }
+    return AsyncStorage.getItem("userToken");
   }
 
   decodeToken(token) {
     try {
-      console.log('🔓 tokenService - Decodificando token...');
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log('📋 tokenService - Payload decodificado:', {
-        id: payload.id,
-        email: payload.email,
-        cargo: payload.cargo,
-        exp: payload.exp,
-        expiracao: new Date(payload.exp * 1000).toLocaleString('pt-BR')
-      });
-      return payload;
-    } catch (error) {
-      console.error('❌ tokenService - Erro ao decodificar token:', error);
+      if (!token || !token.includes(".")) return null;
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch {
       return null;
     }
   }
 
-  async isTokenExpired() {
+  async isTokenExpired(token) {
     try {
-      console.log('⏰ tokenService - Verificando expiração do token...');
-      const token = await this.getToken();
-      
-      if (!token) {
-        console.log('⏰ tokenService - Sem token, considerado expirado');
-        return true;
-      }
-
-      const payload = this.decodeToken(token);
-      
-      if (!payload || !payload.exp) {
-        console.log('⏰ tokenService - Payload inválido, considerado expirado');
-        return true;
-      }
-
-      const now = Date.now() / 1000;
-      const isExpired = payload.exp < now;
-      
-      console.log('⏰ tokenService - Verificação de expiração:', {
-        expiraEm: new Date(payload.exp * 1000).toLocaleString('pt-BR'),
-        agora: new Date().toLocaleString('pt-BR'),
-        expirado: isExpired,
-        segundosRestantes: Math.floor(payload.exp - now)
-      });
-
-      return isExpired;
-
-    } catch (error) {
-      console.error('❌ tokenService - Erro ao verificar expiração:', error);
+      const t = token || (await this.getToken());
+      if (!t) return true;
+      const payload = this.decodeToken(t);
+      if (!payload?.exp) return true;
+      const now = Math.floor(Date.now() / 1000);
+      return payload.exp < now;
+    } catch {
       return true;
     }
   }
 
   async getUserData() {
-  try {
-    console.log('👤 tokenService - Recuperando dados do usuário...');
-    const email = await AsyncStorage.getItem('userEmail');
-    const role = await AsyncStorage.getItem('userRole');
-    const id = await AsyncStorage.getItem('userId');
-
-    const userData = {
-      id,
-      email,
-      role
-    };
-
-    console.log('📋 tokenService - Dados do usuário recuperados:', userData);
-    return userData;
-  } catch (error) {
-    console.error('❌ tokenService - Erro ao recuperar dados do usuário:', error);
-    return null;
+    const [id, email, role] = await Promise.all([
+      AsyncStorage.getItem("userId"),
+      AsyncStorage.getItem("userEmail"),
+      AsyncStorage.getItem("userRole"),
+    ]);
+    return { id, email, role };
   }
-}
-  async setAuthData(token, userData = {}) {
+
+  async setAuthData(token, extra = {}) {
+    console.group("💾 tokenService.setAuthData");
     try {
-      console.log('💾 tokenService - Salvando dados de autenticação...');
-      await AsyncStorage.setItem('userToken', token);
-      
-      const payload = this.decodeToken(token);
-      if (payload) {
-        await AsyncStorage.setItem('userEmail', payload.email || userData.email || '');
-        await AsyncStorage.setItem('userRole', payload.cargo || '');
-        await AsyncStorage.setItem('userId', payload.id?.toString() || '');
-      }
-      
-      console.log('✅ tokenService - Dados salvos com sucesso');
-    } catch (error) {
-      console.error('❌ tokenService - Erro ao salvar dados:', error);
-      throw error;
+      const payload = this.decodeToken(token) || {};
+      await AsyncStorage.multiSet([
+        ["userToken", token],
+        ["userEmail", payload.email || extra.email || ""],
+        ["userRole", payload.cargo || extra.role || ""],
+        ["userId", (payload.id ?? extra.id ?? "").toString()],
+      ]);
+      await debugDump("após setAuthData");
+    } finally {
+      console.groupEnd();
     }
   }
 
   async clearAuthData() {
+    console.group("🧹 tokenService.clearAuthData");
     try {
-      console.log('🗑️ tokenService - LIMPANDO todos os dados de autenticação...');
-      await AsyncStorage.multiRemove([
-        'userToken', 
-        'userEmail', 
-        'userRole', 
-        'userId'
-      ]);
-      console.log('✅ tokenService - Dados limpos com sucesso');
-    } catch (error) {
-      console.error('❌ tokenService - Erro ao limpar dados:', error);
-      throw error;
+      await debugDump("antes clear");
+      await AsyncStorage.multiRemove(KEYS);
+      if (typeof localStorage !== "undefined") {
+        KEYS.forEach((k) => localStorage.removeItem(k));
+      }
+      await debugDump("depois clear");
+    } finally {
+      console.groupEnd();
     }
-  }
-
-  async isAuthenticated() {
-    const token = await this.getToken();
-    if (!token) {
-      console.log('🔐 tokenService - isAuthenticated: false (sem token)');
-      return false;
-    }
-    
-    const isExpired = await this.isTokenExpired();
-    console.log('🔐 tokenService - isAuthenticated:', !isExpired);
-    return !isExpired;
   }
 }
 

@@ -1,40 +1,51 @@
+// src/routes/stack.routes.js
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// 🧭 Telas
 import { Login } from "../screens/Auth/Login";
-import { TabRoutes } from "./tab.routes";
 import { SignUp } from "../screens/Auth/SignUp";
+import { TabRoutes } from "./tab.routes";
 import { ServicesOrders } from "../screens/Clients/ServicesOrders";
 import { ClientAssets } from "../screens/Clients/ClientAssets";
 import { NewServiceOrder } from "../screens/Clients/ServicesOrders/NewServiceOrder";
 import { NewAsset } from "../screens/Clients/ClientAssets/NewAsset";
-import { NewClient } from "../screens/Clients/NewClient"; 
+import { NewClient } from "../screens/Clients/NewClient";
+
+// 🎨 Contextos globais
 import { useTheme } from "../contexts/theme/ThemeContext";
-import { useAuth } from "../hooks/useAuth";
+import { useAuthContext } from "../contexts/auth/AuthContext";
+
+// ⏳ Componente auxiliar
 import { Loading } from "../components/Loading";
 
 const Stack = createNativeStackNavigator();
 
 export function StackRoutes() {
   const { theme } = useTheme();
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuthContext();
 
-  // Loading durante verificação de autenticação
   if (loading) {
-    return <Loading />;
+    return <Loading key="loading" />;
   }
+
+  console.log("🧭 StackRoutes render ->", { isAuthenticated, loading });
 
   return (
     <Stack.Navigator
+      key={isAuthenticated ? "private-stack" : "public-stack"}
+      initialRouteName={isAuthenticated ? "AppTabs" : "Login"}
       screenOptions={{
         headerStyle: { backgroundColor: theme.background },
-        headerTitleStyle: { color: theme.text, fontSize: 24 },
+        headerTitleStyle: { color: theme.text, fontSize: 22, fontWeight: "600" },
         headerTintColor: theme.text,
+        animation: "slide_from_right",
       }}
     >
       {isAuthenticated ? (
-        // ✅ ROTAS PROTEGIDAS - Apenas para usuários logados
         <>
           <Stack.Screen
-            name="Home"
+            name="AppTabs"
             component={TabRoutes}
             options={{ headerShown: false }}
           />
@@ -51,21 +62,20 @@ export function StackRoutes() {
           <Stack.Screen
             name="NewServiceOrder"
             component={NewServiceOrder}
-            options={{ headerTitle: "Criar Novo Serviço" }}
+            options={{ headerTitle: "Novo Serviço" }}
           />
           <Stack.Screen
             name="NewAsset"
             component={NewAsset}
-            options={{ headerTitle: "Criar Novo Ativo" }}
+            options={{ headerTitle: "Novo Ativo" }}
           />
           <Stack.Screen
             name="NewClient"
             component={NewClient}
-            options={{ headerTitle: "Criar Novo Cliente" }}
+            options={{ headerTitle: "Novo Cliente" }}
           />
         </>
       ) : (
-        // ❌ ROTAS PÚBLICAS - Apenas para usuários não logados
         <>
           <Stack.Screen
             name="Login"
