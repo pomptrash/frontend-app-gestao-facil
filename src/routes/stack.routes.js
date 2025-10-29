@@ -39,7 +39,6 @@ export function StackRoutes() {
         headerStyle: { backgroundColor: theme.background },
         headerTitleStyle: { color: theme.text, fontSize: 22, fontWeight: "600" },
         headerTintColor: theme.text,
-        animation: "slide_from_right",
       }}
     >
       {isAuthenticated ? (
