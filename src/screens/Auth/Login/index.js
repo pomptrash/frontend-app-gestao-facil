@@ -131,6 +131,7 @@ export function Login() {
               placeholder="Senha"
               color={theme.text}
               placeHolderColor={theme.text}
+              SetSecureTextEntry={true}
               secureTextEntry={hidePassword}
               setHidePassword={setHidePassword}
               hidePassword={hidePassword}
@@ -140,7 +141,7 @@ export function Login() {
           </View>
 
           {/* Feedback de erro/sucesso */}
-          {!!error && <Text style={style.error}>{error}</Text>}
+          {!!error && <Text style={[{color:theme.error}]}>{error}</Text>}
           {!!successMessage && <Text style={style.success}>{successMessage}</Text>}
 
           {/* Botão principal */}
@@ -176,6 +177,7 @@ export function Login() {
             onPress={handleNavigateToSignUp}
           />
         </View>
+        <Text></Text>
       </ScrollView>
     </TouchableWithoutFeedback>
   );

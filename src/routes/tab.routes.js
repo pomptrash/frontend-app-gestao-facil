@@ -7,7 +7,6 @@ import { useTheme } from "../contexts/theme/ThemeContext";
 // 🧭 Telas
 import { Home } from "../screens/Home";
 import { Clients } from "../screens/Clients";
-import { ServicesOrders } from "../screens/Clients/ServicesOrders";
 import { Options } from "../screens/Options";
 
 const Tab = createBottomTabNavigator();
@@ -38,9 +37,6 @@ export function TabRoutes() {
             case "Clientes":
               iconName = "people-outline";
               break;
-            case "Serviços":
-              iconName = "construct-outline";
-              break;
             case "Perfil":
               iconName = "person-circle-outline";
               break;
@@ -55,7 +51,6 @@ export function TabRoutes() {
     >
       <Tab.Screen name="Início" component={Home} />
       <Tab.Screen name="Clientes" component={Clients} />
-      <Tab.Screen name="Serviços" component={ServicesOrders} />
       <Tab.Screen name="Perfil" component={Options} />
     </Tab.Navigator>
   );
