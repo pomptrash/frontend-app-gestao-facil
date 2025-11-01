@@ -189,6 +189,7 @@ export function SignUp() {
                   placeholder={placeholder}
                   color={theme.text}
                   placeHolderColor={theme.text}
+                  SetSecureTextEntry={true}
                   secureTextEntry={hideState}
                   setHidePassword={setHideState}
                   hidePassword={hideState}
@@ -199,7 +200,7 @@ export function SignUp() {
 
             {/* Mensagem de erro */}
             {error ? (
-              <Text style={style.error}>{error}</Text>
+              <Text style={[{color:theme.error}]}>{error}</Text>
             ) : null}
 
             {/* Botão de cadastro */}

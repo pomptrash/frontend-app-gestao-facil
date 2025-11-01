@@ -7,6 +7,8 @@ export const baseLightColors = {
   text: "#1C1C1C",
   card: "#FFFFFF",
   border: "#D1D1D6",
+  error: "#FF3B30",
+  success: "#34C759"
 };
 
 export const baseDarkColors = {
@@ -15,6 +17,8 @@ export const baseDarkColors = {
   text: "#E5E5E5",
   card: "#1E1E1E",
   border: "#38383A",
+  error: "#FF453A",
+  success: "#30D158"
 };
 
 // OBJETO DE CORES PARA OS COMPONENTES DO REACT NATIVE PAPER

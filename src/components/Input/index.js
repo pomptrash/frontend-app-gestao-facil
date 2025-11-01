@@ -14,8 +14,8 @@ export function Input({
   placeHolderColor,
   color,
   SetSecureTextEntry,
-  setHidePassowrd,
-  hidePassowrd,
+  setHidePassword,
+  hidePassword,
 }) {
   const { theme } = useTheme();
   return (
@@ -34,11 +34,11 @@ export function Input({
       {SetSecureTextEntry && (
         <TouchableOpacity style={{position:'absolute', right: 15}}>
           <Feather
-            name={hidePassowrd ? "eye" : "eye-off"}
+            name={hidePassword ? "eye" : "eye-off"}
             color={theme.text}
             size={16}
             onPress={() => {
-              setHidePassowrd(!hidePassowrd);
+              setHidePassword(!hidePassword);
             }}
           />
         </TouchableOpacity>

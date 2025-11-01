@@ -157,9 +157,8 @@ Endpoints esperados:
 
 ## 👨‍💻 Autores
 
-**João**
-
-Preencher aqui
+**João Pompeu**
+Desenvolvedor Front End | React, React Native, Next.JS 
 
 
 **Érico Freitas Neto**

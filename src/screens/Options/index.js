@@ -27,10 +27,6 @@ export function Options() {
         console.log("⚙️ [Options] Executando logout() do contexto...");
         await logout();
         console.log("✅ [Options] Logout concluído, redirecionando para Login...");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Login" }],
-        });
       } catch (error) {
         console.error("❌ [Options] Erro ao sair:", error);
         alert("Erro ao sair da conta.");
@@ -52,10 +48,6 @@ export function Options() {
               console.log("⚙️ [Options] Executando logout() do contexto...");
               await logout();
               console.log("✅ [Options] Logout concluído, redirecionando para Login...");
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }],
-              });
             } catch (error) {
               console.error("❌ [Options] Erro ao sair:", error);
               Alert.alert("Erro", "Não foi possível sair da conta.");
@@ -75,11 +67,11 @@ export function Options() {
         justifyContent: "space-between",
       }}
     >
-      <View>
+      <View style={{marginTop:20}}>
         <Text
           style={{
             color: theme.text,
-            fontSize: 22,
+            fontSize: 24,
             fontWeight: "600",
             marginBottom: 10,
           }}
@@ -88,14 +80,14 @@ export function Options() {
         </Text>
 
         <View style={{ marginTop: 10 }}>
-          <Text style={{ color: theme.text, fontSize: 16 }}>
-            <Text style={{ fontWeight: "600" }}>E-mail: </Text>
+          <Text style={{ color: theme.text, fontSize: 16, fontWeight:'bold', textTransform:'uppercase' }}>
+            <Text style={{ fontWeight: "600", fontSize: 20 }}>E-mail: </Text>
             {user?.email || "Não disponível"}
           </Text>
 
-          <Text style={{ color: theme.text, fontSize: 16, marginTop: 6 }}>
-            <Text style={{ fontWeight: "600" }}>Cargo: </Text>
-            {user?.cargo || "Não informado"}
+          <Text style={{ color: theme.text, fontSize: 16, fontWeight:'bold', textTransform:'uppercase' }}>
+            <Text style={{ fontWeight: "600", fontSize: 20}}>Cargo: </Text>
+            {user?.role || "Não informado"}
           </Text>
         </View>
       </View>
@@ -108,7 +100,7 @@ export function Options() {
             handleLogout();
           }}
           style={{
-            backgroundColor: "#FF3B30",
+            backgroundColor: "#007AFF",
             paddingVertical: 14,
             borderRadius: 10,
             alignItems: "center",
