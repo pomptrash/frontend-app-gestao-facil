@@ -14,6 +14,15 @@ class AtivoService {
     return this.listarAtivos({ clienteId });
   }
 
+  async criarAtivo(ativoData) {
+    try {
+      const response = await api.post('/v1/ativos', ativoData);
+      return response.data;
+    } catch (error) {
+      throw this._handleApiError(error, 'criar ativo');
+    }
+  }
+
   _handleApiError(error, contexto) {
     const status = error.response?.status;
     switch (status) {
@@ -33,4 +42,3 @@ class AtivoService {
 }
 
 export default new AtivoService();
-

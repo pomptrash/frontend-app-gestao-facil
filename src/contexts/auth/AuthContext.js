@@ -14,3 +14,21 @@ export const useAuthContext = () => {
   if (!context) throw new Error("useAuthContext deve ser usado dentro de um AuthProvider");
   return context;
 };
+import React, { createContext, useContext } from "react";
+import { useAuth } from "../../hooks/useAuth";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const auth = useAuth();
+  try {
+    console.log("[AuthProvider] ready:", Object.keys(auth));
+  } catch {}
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+};
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuthContext deve ser usado dentro de um AuthProvider");
+  return context;
+};

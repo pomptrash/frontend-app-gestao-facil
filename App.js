@@ -5,7 +5,6 @@ import { ThemeSwitcher } from "./src/contexts/theme/ThemeSwitcher";
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/contexts/auth/AuthContext";
 import { ThemeProvider } from "./src/contexts/theme/ThemeContext";
-import { ClientsProvider } from "./src/contexts/clients/ClientsContext";
 import * as Font from "expo-font";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { ServiceOrdersProvider } from "./src/contexts/serviceOrders/ServiceOrdersContext";
@@ -24,7 +23,9 @@ export default function App() {
         <SafeAreaView style={{ flex: 1, backgroundColor: "#121212" }}>
           <AuthProvider>
             <ClientsProvider>
-              <Routes />
+              <ServiceOrdersProvider>
+                <Routes />
+              </ServiceOrdersProvider>
             </ClientsProvider>
           </AuthProvider>
         </SafeAreaView>
