@@ -1,28 +1,42 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Input } from "../../components/Input";
 import { useTheme } from "../../contexts/theme/ThemeContext";
+import { useAuthContext } from "../../contexts/auth/AuthContext";
 import { useClients } from "../../contexts/clients/ClientsContext";
 import { style } from "./style";
-import { useState } from "react";
 import { ClientCard } from "../../components/ClientCard";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 export function Clients() {
   const navigation = useNavigation();
-  // array de teste
-  const { clients } = useClients(); // array de clientes definido no ClientsContext
-  const { theme } = useTheme(); // // uso do themeContext (darkMode)
+  const { theme } = useTheme();
+  const { logout } = useAuthContext();
+  const { clients, loading, error, fetchClients } = useClients();
 
   const [searchClient, setSearchClient] = useState("");
 
+  // Se o erro do contexto indicar sessão expirada, efetua logout
+  useEffect(() => {
+    if (error && typeof error === "string" && error.toLowerCase().includes("expir")) {
+      logout();
+    }
+  }, [error]);
+
   const filteredClient = clients.filter((client) =>
-    client.name.toLowerCase().includes(searchClient.toLowerCase())
-  ); // vasculha os clientes no array e filtra se o valor do input existir dentro do array
+    client.nome?.toLowerCase().includes(searchClient.toLowerCase())
+  );
 
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
-      <Text></Text>
+      {/* BOTÃO NOVO CLIENTE */}
       <TouchableOpacity
         style={{
           backgroundColor: theme.primary,
@@ -45,6 +59,8 @@ export function Clients() {
           Adicionar Cliente
         </Text>
       </TouchableOpacity>
+
+      {/* CABEÇALHO */}
       <View style={style.header}>
         <Text style={[style.title, { color: theme.text }]}>
           Gerenciamento de Clientes
@@ -57,10 +73,23 @@ export function Clients() {
           placeHolderColor={theme.text}
         />
       </View>
-      {/* Renderiza todos os clientes, caso seja feita uma pesquisa, atualiza o valor de 'filteredClient' e renderiza conforme foi pesquisado */}
 
-      {/* caso o valor do input não exista no array, o 'filteredClient' não recebe nada e renderizaa mensagem de not found */}
-      {filteredClient.length === 0 ? (
+      {/* LOADING / ERRO */}
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color={theme.primary}
+          style={{ marginTop: 40 }}
+        />
+      )}
+      {error && (
+        <Text style={{ color: "red", textAlign: "center", marginVertical: 10 }}>
+          {error}
+        </Text>
+      )}
+
+      {/* LISTA */}
+      {!loading && filteredClient.length === 0 ? (
         <Text style={[style.notFoundText, { color: theme.text }]}>
           Nenhum cliente localizado
         </Text>
@@ -70,17 +99,23 @@ export function Clients() {
           data={filteredClient}
           renderItem={({ item }) => (
             <ClientCard
-              client={item}
+              client={{
+                id: item.id,
+                name: item.nome,
+                cnpj: item.cnpj,
+                contatos: item.contatos,
+              }}
               featherIcon={"user"}
               onPress={() =>
                 navigation.navigate("ClientAssets", { client: item })
               }
             />
           )}
-          keyExtractor={(client) => client.id}
+          keyExtractor={(client) => client.id.toString()}
+          onRefresh={fetchClients}
+          refreshing={loading}
         />
       )}
-      <Text></Text>
     </View>
   );
 }

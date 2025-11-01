@@ -1,29 +1,44 @@
-import { View, TouchableOpacity, Text } from "react-native";
-import { List } from "react-native-paper";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
-import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Input } from "../../../components/Input";
-import { useState } from "react";
+import ativoService from "../../../service/ativoService";
 import { Feather } from "@expo/vector-icons";
-import { th } from "react-native-paper-dates";
 
-export function ClientAssets({ route }) {
-  const navigation = useNavigation();
-  const [searchAsset, setSearchAsset] = useState("");
-
+export function ClientAssets({ route, navigation }) {
+  const { client } = route.params;
   const { theme } = useTheme();
-  const { client } = route.params; // lista de clientes passada através da navegação
-  const filteredAssets = client.assets.filter((asset) =>
-    asset.name.toLowerCase().includes(searchAsset.toLowerCase())
-  );
+  const [assets, setAssets] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchAssets = async () => {
+    if (!client?.id) return;
+    setLoading(true);
+    setError("");
+    try {
+      const data = await ativoService.listarAtivosPorCliente(client.id);
+      setAssets(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setError(e?.message || "Falha ao carregar ativos");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssets();
+  }, [client?.id]);
+
+  const header = useMemo(() => (
+    <View style={{ padding: 16 }}>
+      <Text style={{ color: theme.text, fontSize: 20, fontWeight: "bold" }}>
+        Ativos do cliente: {client?.nome || client?.name}
+      </Text>
+    </View>
+  ), [client, theme]);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.background,
-      }}
-    >
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <TouchableOpacity
         style={{
           backgroundColor: theme.primary,
@@ -42,78 +57,52 @@ export function ClientAssets({ route }) {
         onPress={() => navigation.navigate("NewAsset", { client })}
       >
         <Feather name="plus" size={32} color={"white"} />
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>
-          Adicionar Ativo
-        </Text>
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>Adicionar Ativo</Text>
       </TouchableOpacity>
-      <List.Accordion
-        title="Listar serviços por ativo"
-        titleStyle={{ color: theme.text, fontWeight: "bold", fontSize: 16 }}
-        style={{
-          borderWidth: 1,
-          borderColor: theme.border,
-          borderRadius:8,
-          padding: 8,
-          width: 300,
-          height: 60,
-          marginTop: 16,
-          margin: "auto"
-        }}
-      >
-        <View style={{ margin: "auto", padding: 8 }}>
-          <Input
-            value={searchAsset}
-            onChangeText={setSearchAsset}
-            placeholder={"Buscar Ativo"}
-            color={theme.text}
-            placeHolderColor={theme.text}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("ServicesOrders", {
-              client,
-              assets: client.assets,
-              AllServices: true,
-            })
-          }
-        >
-          <List.Item
-            title="Todos os serviços"
-            titleStyle={{
-              fontWeight: "bold",
-              borderBottomWidth: 1,
-              borderColor: theme.border,
-              padding: 8,
-              width: 300,
-              margin: "auto",
-            }}
-          />
-        </TouchableOpacity>
+
+      {header}
+
+      {loading && (
+        <ActivityIndicator size="large" color={theme.primary} style={{ marginTop: 40 }} />
+      )}
+      {!!error && (
+        <Text style={{ color: "red", textAlign: "center", marginVertical: 10 }}>{error}</Text>
+      )}
+
+      {!loading && assets.length === 0 ? (
+        <Text style={{ color: theme.text, textAlign: "center", marginTop: 16 }}>
+          Nenhum ativo encontrado
+        </Text>
+      ) : (
         <FlatList
-          data={filteredAssets}
+          contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 90 }}
+          data={assets}
+          keyExtractor={(item) => String(item.id)}
+          onRefresh={fetchAssets}
+          refreshing={loading}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("ServicesOrders", { client, asset: item })
-              }
+              style={{
+                backgroundColor: theme.card,
+                borderColor: theme.border,
+                borderWidth: 1,
+                borderRadius: 8,
+                padding: 12,
+                marginVertical: 6,
+              }}
+              onPress={() => navigation.navigate("ServicesOrders", { client, asset: item })}
             >
-              <List.Item
-                title={item.name}
-                titleStyle={{
-                  fontWeight: "bold",
-                  borderBottomWidth: 1,
-                  borderColor: theme.border,
-                  padding: 8,
-                  width: 300,
-                  margin: "auto",
-                }}
-              />
+              <Text style={{ color: theme.text, fontSize: 18, fontWeight: "bold" }}>{item.nome}</Text>
+              {!!item.numeroSerie && (
+                <Text style={{ color: theme.text }}>Nº de Série: {item.numeroSerie}</Text>
+              )}
+              {!!item.status && (
+                <Text style={{ color: theme.text }}>Status: {item.status}</Text>
+              )}
             </TouchableOpacity>
           )}
-          keyExtractor={(asset) => asset.id}
         />
-      </List.Accordion>
+      )}
     </View>
   );
 }

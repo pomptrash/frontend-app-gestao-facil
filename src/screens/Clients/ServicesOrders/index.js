@@ -1,25 +1,37 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
-import { style } from "./style";
+import { style, serviceStatusColors } from "./style";
 import { Feather } from "@expo/vector-icons";
-import { serviceStatusColors } from "./style";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useMemo } from "react";
+import { useServiceOrders } from "../../../contexts/serviceOrders/ServiceOrdersContext";
 
 export function ServicesOrders({ route }) {
   const { theme } = useTheme();
   const navigation = useNavigation();
-  // array de teste
-  const { client } = route.params; // listagem de clientes passada através da prop
-  const { asset } = route.params; // asset específico que chamou a navegação
-  // se a navegação foi através de um asset específico, realiza a filtragem. caso contrário, mostra todos os serviços.
-  const services = asset
-    ? client.services.filter((service) => service.clientAssetId === asset.id)
-    : client.services;
+  const { orders, loading, error, fetchOrders } = useServiceOrders();
 
-  const { AllServices } = route.params; // condição para que o botão de criar novo serviço só esteja disponível se a navegação for através de um ativo específico
+  const client = route?.params?.client;
+  const asset = route?.params?.asset;
+  const AllServices = route?.params?.AllServices;
+
+  useEffect(() => {
+    if (asset?.id) {
+      // Backend filtra por ativoId
+      fetchOrders({ ativoId: asset.id });
+    } else if (client?.id) {
+      // Backend filtra por clienteId
+      fetchOrders({ clienteId: client.id });
+    } else {
+      fetchOrders();
+    }
+  }, [asset?.id, client?.id]);
+
+  const data = useMemo(() => orders, [orders]);
+
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
-      {!AllServices && (
+      {!AllServices && asset?.id && (
         <TouchableOpacity
           style={{
             backgroundColor: theme.primary,
@@ -35,68 +47,80 @@ export function ServicesOrders({ route }) {
             padding: 8,
             gap: 8,
           }}
-          onPress={() => navigation.navigate("NewServiceOrder", { asset })}
+          onPress={() => navigation.navigate("NewServiceOrder", { asset, client })}
         >
           <Feather name="plus" size={32} color={"white"} />
-          <Text style={{ color: "#fff", fontWeight: "bold" }}>
-            Criar Serviço
-          </Text>
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>Criar Serviço</Text>
         </TouchableOpacity>
       )}
-      {services?.length <= 0 ? (
+
+      {error && (
+        <Text style={{ color: "red", textAlign: "center", margin: 10 }}>{error}</Text>
+      )}
+
+      {!loading && (!data || data.length === 0) ? (
         <Text
           style={[
-            {
-              textAlign: "center",
-              fontSize: 24,
-              fontWeight: "bold",
-              padding: 8,
-              color: theme.text,
-            },
+            { textAlign: "center", fontSize: 24, fontWeight: "bold", padding: 8, color: theme.text },
           ]}
         >
-          Cliente não possui serviços associados para o ativo: {asset.name}
+          {asset?.name || asset?.nome
+            ? `Nenhum serviço associado ao ativo: ${asset.name || asset.nome}`
+            : "Nenhum serviço encontrado"}
         </Text>
       ) : (
         <FlatList
           style={style.services}
-          data={services}
+          data={data}
+          onRefresh={() => {
+            if (asset?.id) return fetchOrders({ ativoId: asset.id });
+            if (client?.id) return fetchOrders({ clienteId: client.id });
+            return fetchOrders();
+          }}
+          refreshing={loading}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={[style.servicesData, { backgroundColor: theme.card }]}
-            >
+            <TouchableOpacity style={[style.servicesData, { backgroundColor: theme.card }]}>
               <Text style={[style.serviceDataTitle, { color: theme.text }]}>
-                <Feather name="tool" size={24} /> - {item.description}
+                <Feather name="tool" size={24} /> - {item.descricao}
               </Text>
-              <Text
-                style={[
-                  style.serviceDataText,
-                  { color: serviceStatusColors[item.status] },
-                ]}
-              >
+              <Text style={[style.serviceDataText, { color: serviceStatusColors[item.status] || theme.text }]}>
                 {item.status}
               </Text>
+              {!!item.createdAt && (
+                <Text style={[style.serviceDataText, { color: theme.text }]}>
+                  Criado em {new Date(item.createdAt).toLocaleDateString("pt-BR")}
+                </Text>
+              )}
+              {!!item.dataAgendada && (
+                <Text style={[style.serviceDataText, { color: theme.text }]}>
+                  Agendado para {new Date(item.dataAgendada).toLocaleDateString("pt-BR")}
+                </Text>
+              )}
+              {!!item.dataConclusao && (
+                <Text style={[style.serviceDataText, { color: theme.text }]}>
+                  Concluído em {new Date(item.dataConclusao).toLocaleDateString("pt-BR")}
+                </Text>
+              )}
               <Text style={[style.serviceDataText, { color: theme.text }]}>
-                Criado em {new Date(item.createdAt).toLocaleDateString("pt-BR")}
-              </Text>
-
-              <Text style={[style.serviceDataText, { color: theme.text }]}>
-                {item.status === "Concluído" ? "Concluído em" : "Agendado para"}{" "}
-                {new Date(item.scheduledDate).toLocaleDateString("pt-BR")}
+                Cliente: {item.cliente?.nome || client?.nome || client?.name || "-"}
               </Text>
               <Text style={[style.serviceDataText, { color: theme.text }]}>
-                Ativo:{" "}
-                {item.clientAssetId
-                  ? client.assets.find(
-                      (asset) => asset.id == item.clientAssetId
-                    )?.name
-                  : "Nenhum ativo associdado"}
+                Ativo: {item.ativo?.nome || asset?.nome || asset?.name || "-"}
               </Text>
+              <Text style={[style.serviceDataText, { color: theme.text }]}>
+                Tipo: {item.tipoServico?.nome || "-"}
+              </Text>
+              {!!item.responsavel?.nome && (
+                <Text style={[style.serviceDataText, { color: theme.text }]}>
+                  Responsável: {item.responsavel.nome}
+                </Text>
+              )}
             </TouchableOpacity>
           )}
-          keyExtractor={(service) => service.id}
+          keyExtractor={(service) => (service.id ? String(service.id) : Math.random().toString(36))}
         />
       )}
     </View>
   );
 }
+

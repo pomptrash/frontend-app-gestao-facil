@@ -1,70 +1,68 @@
-import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../../../../contexts/theme/ThemeContext";
-import { useClients } from "../../../../contexts/clients/ClientsContext";
-import { useState } from "react";
-import { Input } from "../../../../components/Input";
-import { Button } from "../../../../components/Button";
 
-import { style } from "./style";
-
-export function NewAsset({ route }) {
-  const [assetName, setAssetName] = useState("");
-  const [assetCode, setAssetCode] = useState("");
-  const [assetType, setAssetType] = useState("");
-
-  const { client } = route.params;
+export function NewAsset() {
   const { theme } = useTheme();
+  const [assetName, setAssetName] = useState("");
+  const [assetLocation, setAssetLocation] = useState("");
+
+  function handleSaveAsset() {
+    console.log("Novo ativo salvo:", { assetName, assetLocation });
+    // aqui você pode integrar com POST /v1/ativos no seu backend
+  }
 
   return (
-    <View
-      style={[
-        {
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 16,
-          backgroundColor: theme.background,
-        },
-      ]}
-    >
-      <Text
-        style={{
-          color: theme.text,
-          fontSize: 24,
-          fontWeight: "bold",
-          width: 300,
-          marginBottom: 16,
-          gap: 8,
-        }}
-      >
-        Cliente: {client.name} {""}
-      </Text>
-      <Input
-        onChangeText={setAssetCode}
-        value={assetCode}
-        placeholder={"Código do Ativo"}
-        color={theme.text}
-        placeHolderColor={theme.text}
-      />
-      <Input
-        onChangeText={setAssetName}
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>Cadastrar Novo Ativo</Text>
+
+      <TextInput
+        style={[styles.input, { borderColor: theme.primary, color: theme.text }]}
+        placeholder="Nome do ativo"
+        placeholderTextColor={theme.text}
         value={assetName}
-        placeholder={"Nome do Ativo"}
-        color={theme.text}
-        placeHolderColor={theme.text}
+        onChangeText={setAssetName}
       />
-      <Input
-        onChangeText={setAssetType}
-        value={assetType}
-        placeholder={"Tipo do Ativo"}
-        color={theme.text}
-        placeHolderColor={theme.text}
+
+      <TextInput
+        style={[styles.input, { borderColor: theme.primary, color: theme.text }]}
+        placeholder="Localização"
+        placeholderTextColor={theme.text}
+        value={assetLocation}
+        onChangeText={setAssetLocation}
       />
-      <Button
-        btnText={"Criar Ativo"}
-        style={[style.btn, { backgroundColor: theme.primary }]}
-        textStyle={style.btnText}
-      />
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: theme.primary }]}
+        onPress={handleSaveAsset}
+      >
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>Salvar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
+  },
+  button: {
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+});

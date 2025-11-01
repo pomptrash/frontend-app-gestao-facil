@@ -9,30 +9,30 @@ import { style } from "./style";
 import { useServiceOrders } from "../../../../contexts/serviceOrders/ServiceOrdersContext";
 
 export function NewServiceOrder({ route }) {
-  const [description, setDescription] = useState("");
-  const [inputDate, setInputDate] = useState(null);
-  const navigation = useNavigation();
-  const { asset, client } = route.params || {};
-  const { theme } = useTheme();
-  const { createOrder, loading } = useServiceOrders();
+  const [description, setDescription] = useState("")
+  const [inputDate, setInputDate] = useState(null)
+  const navigation = useNavigation()
+  const { asset, client } = route.params || {}
+  const { theme } = useTheme()
+  const { createOrder, loading } = useServiceOrders()
 
   const handleCreate = async () => {
     if (!description || !inputDate) {
-      Alert.alert("Campos obrigatórios", "Informe descrição e data.");
-      return;
+      Alert.alert("Campos obrigatórios", "Informe descrição e data.")
+      return
     }
     try {
       await createOrder({
-        descricao: description,
-        dataAgendada: inputDate,
-        ativoId: asset?.id,
-        clienteId: client?.id,
-      });
-      navigation.goBack();
+        description,
+        scheduledDate: inputDate,
+        clientAssetId: asset?.id,
+        clientId: client?.id,
+      })
+      navigation.goBack()
     } catch (e) {
-      Alert.alert("Erro", e?.message || "Falha ao criar serviço");
+      Alert.alert("Erro", e?.message || "Falha ao criar serviço")
     }
-  };
+  }
 
   return (
     <View
@@ -53,8 +53,8 @@ export function NewServiceOrder({ route }) {
           marginBottom: 16,
         }}
       >
-        {client?.nome || client?.name ? `Cliente: ${client?.nome || client?.name}` : "Novo Serviço"} {" "}
-        {asset?.nome || asset?.name ? `/ Ativo: ${asset?.nome || asset?.name}` : ""}
+        {client?.name ? `Cliente: ${client.name}` : "Novo Serviço"} {" "}
+        {asset?.name ? `/ Ativo: ${asset.name}` : ""}
       </Text>
 
       <Input
@@ -96,6 +96,7 @@ export function NewServiceOrder({ route }) {
         disabled={loading}
       />
     </View>
-  );
+  )
 }
+
 
