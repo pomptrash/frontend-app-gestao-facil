@@ -225,8 +225,8 @@ Se o token JWT contiver `clientId` (ou `clienteId`), o app restringe:
 **Érico de Freitas Neto**
 📍 Líder Técnico em Sistemas Embarcados e Videomonitoramento
 🔗 [GitHub – EricofreitasNeto](https://github.com/EricofreitasNeto)
-📧 [erico@exemplo.com](mailto:erico@exemplo.com)
-🧠 [LinkedIn – Erico de Freitas Neto](https://www.linkedin.com/in/ericodefreitasneto/)
+📧 [Email – Erico de Freitas Neto](mailto:erico@exemplo.com)
+🧠 [LinkedIn – Erico de Freitas Neto](https://www.linkedin.com/in/erico-neto-4b424473/)
 
 ---
 
