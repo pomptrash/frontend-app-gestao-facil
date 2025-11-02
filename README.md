@@ -1,73 +1,100 @@
-﻿# Gestão Fácil — App Mobile
+﻿
+# 📱 Gestão Fácil — App Mobile
 
-Aplicativo mobile (Expo/React Native) para gestão de Clientes, Ativos e Ordens de Serviço (OS), com autenticação via JWT, controle de acesso por cliente e navegação fluida em abas/stacks.
+[![Expo](https://img.shields.io/badge/Expo-49.0.0-1B1F23?logo=expo)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.76-61DAFB?logo=react)](https://reactnative.dev/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Axios](https://img.shields.io/badge/Axios-HTTP-blue?logo=axios)](https://axios-http.com)
+[![JWT](https://img.shields.io/badge/Auth-JWT-orange)](https://jwt.io/)
 
----
-
-## Funcionalidades
-
-- Autenticação (Login/Registro) com persistência de sessão (JWT)
-- Clientes: listagem, cadastro e navegação para ativos e OS
-- Ativos: listagem (com escopo por cliente) e criação vinculada a Local
-- Ordens de Serviço: listagem global/por cliente/por ativo, criação, atualização e conclusão
-- Locais: listagem para seleção no cadastro de Ativo
-- Navegação moderna com React Navigation (Tabs + Stacks)
-- Tema claro/escuro e componentes reutilizáveis
+> Aplicativo mobile desenvolvido com **Expo/React Native** para **gestão de clientes, ativos e ordens de serviço (OS)**.  
+> Inclui **autenticação JWT**, **controle de acesso por cliente**, **navegação fluida** (tabs/stacks) e integração com o backend [Gestão Fácil API](https://github.com/EricofreitasNeto/GestaoFacil).
 
 ---
 
-## Tecnologias
+## 🚀 Funcionalidades
 
-- Expo + React Native
-- React Navigation (stack + bottom-tabs)
-- Axios (interceptors com JWT)
-- AsyncStorage (persistência de token); suporte a SecureStore opcional
-- React Context (Auth, Theme, Clients, ServiceOrders)
+- 🔐 **Autenticação JWT** (login, registro e persistência de sessão)
+- 🏢 **Clientes** — listagem, cadastro e vínculo com ativos e OS
+- ⚙️ **Ativos** — cadastro vinculado a local e cliente
+- 🧰 **Ordens de Serviço (OS)** — listagem global e por cliente/ativo, criação e conclusão
+- 📍 **Locais** — seleção e associação em novos ativos
+- 🌓 **Tema claro/escuro** dinâmico via Context API
+- 🧭 **Navegação moderna** com React Navigation (Tabs + Stacks)
+- 🔄 **Atualização automática** ao retornar às telas (`useFocusEffect`)
 
 ---
 
-## Requisitos e Variáveis de Ambiente
+## 🧩 Tecnologias Utilizadas
 
-- Node.js 18+
-- Expo CLI
-- Backend disponível com rotas REST (ver Endpoints)
+| Tecnologia | Descrição |
+|-------------|------------|
+| ⚛️ **Expo + React Native** | Base do app mobile multiplataforma |
+| 🧭 **React Navigation** | Navegação em abas e pilhas |
+| 🌐 **Axios** | Cliente HTTP com interceptors JWT |
+| 💾 **AsyncStorage / SecureStore** | Persistência local segura |
+| 🧠 **React Context API** | Controle global de autenticação, tema e dados |
+| ⚙️ **dotenv** | Configuração de variáveis de ambiente (`EXPO_PUBLIC_API_URL`) |
 
-Arquivo .env na raiz:
+---
 
-`
+## ⚙️ Requisitos
+
+- Node.js **v18+**
+- Expo CLI (`npm install -g expo-cli`)
+- Backend **Gestão Fácil API** em execução (local ou remoto)
+
+---
+
+## 🔧 Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
 EXPO_PUBLIC_API_URL=https://seu-backend.exemplo.com
-`
+````
 
-src/service/api.js resolve a aseURL a partir de EXPO_PUBLIC_API_URL e faz fallback por plataforma (ex.: Android emulador → 10.0.2.2:3000).
+> O `src/service/api.js` resolve automaticamente a `baseURL` conforme a plataforma:
+>
+> * Android emulador → `http://10.0.2.2:3000`
+> * iOS simulador → `http://localhost:3000`
 
 ---
 
-## Como Executar
+## 🛠️ Como Executar
 
-1) Instalar dependências
+1️⃣ Instalar dependências
 
-`
+```bash
 npm install
-`
+```
 
-2) Iniciar o app
+2️⃣ Iniciar o servidor de desenvolvimento
 
-`
+```bash
 npm start
-`
+```
 
-3) Abrir em dispositivo/emulador
+3️⃣ Executar o app
 
-- Expo Go (QR code)
-- Android Studio / Xcode
+* **Expo Go (QR Code)**
+* **Android Studio**
+* **Xcode (iOS)**
 
-Scripts úteis (package.json): start, ndroid, ios, web.
+> **Scripts úteis (package.json):**
+
+```bash
+npm run start
+npm run android
+npm run ios
+npm run web
+```
 
 ---
 
-## Estrutura do Projeto (resumo)
+## 🧱 Estrutura do Projeto
 
-`
+```bash
 src/
   routes/
     index.js
@@ -76,88 +103,154 @@ src/
   screens/
     Auth/ (Login, SignUp)
     Clients/ (lista, ativos, OS, novo cliente)
-    Clients/ClientAssets/NewAsset/ (cadastro de ativo com local)
-    Clients/ServicesOrders/ (lista/criar/editar OS)
-    Assets/ (lista global por escopo)
-    Locations/ (lista para seleção)
-    ServiceTypes/ (placeholder)
-    Users/ (placeholder admin)
-    Home/, Options/
+    Clients/ClientAssets/NewAsset/
+    Clients/ServiceOrders/
+    Assets/
+    Locations/
+    ServiceTypes/
+    Users/
+    Home/
+    Options/
   contexts/
-    auth/, clients/, serviceOrders/, theme/
+    auth/
+    clients/
+    serviceOrders/
+    theme/
   service/
-    api.js, authService.js, tokenService.js
-    clienteService.js, ativoService.js, servicoService.js, localService.js
-  components/ (Button, Input, ClientCard, Loading ...)
-`
+    api.js
+    tokenService.js
+    authService.js
+    clienteService.js
+    ativoService.js
+    servicoService.js
+    localService.js
+  components/
+    Button.js
+    Input.js
+    ClientCard.js
+    Loading.js
+```
 
 ---
 
-## Navegação
+## 🌐 Navegação
 
-- Auth Stack: Login, SignUp
-- App Tabs:
-  - Dashboard (Home)
-  - Clientes (lista e busca)
-  - Serviços (lista global; filtra por cliente/ativo quando navegada por contexto)
-  - Ativos (lista por escopo do cliente do usuário)
-  - Mais (submenu: Locais, Tipos de Serviço, Usuários admin)
+### **Stacks e Abas**
 
----
-
-## Autenticação e Segurança
-
-- AuthContext expõe user, isAuthenticated, login, logout, checkAuth
-- 	okenService persiste userToken, userEmail, userRole, userId, userClientId
-- pi.js injeta Authorization: Bearer <token> e, em 401, limpa sessão e notifica listeners
-
-Escopo por cliente: se o JWT contiver clienteId/clientId, o app restringe listagens/CRUD a esse cliente (Clientes, Ativos, Serviços).
+| Stack         | Telas                                       | Descrição                |
+| ------------- | ------------------------------------------- | ------------------------ |
+| **AuthStack** | Login, SignUp                               | Controle de autenticação |
+| **AppTabs**   | Dashboard, Clientes, Serviços, Ativos, Mais | Navegação principal      |
+| **MaisStack** | Locais, Tipos de Serviço, Usuários (admin)  | Módulos adicionais       |
 
 ---
 
-## Endpoints (esperados no backend)
+## 🔒 Autenticação e Segurança
 
-- Autenticação: POST /auth/login, POST /auth/register
-- Clientes: GET /v1/clientes, GET /v1/clientes/:id, POST /v1/clientes, PUT /v1/clientes/:id, DELETE /v1/clientes/:id
-- Ativos: GET /v1/ativos?clienteId=, POST /v1/ativos (payload com 
-ome, clienteId, localId)
-- Serviços: GET /v1/servicos?clienteId=&ativoId=, POST /v1/servicos, PUT /v1/servicos/:id
-- Locais: GET /v1/locais
+* `AuthContext` gerencia o estado global:
 
----
+  ```js
+  { user, isAuthenticated, login, logout, checkAuth }
+  ```
+* `tokenService` armazena localmente:
 
-## Fluxos Principais
-
-- Clientes
-  - Lista filtrável; se user.clientId existir, mostra apenas o cliente do usuário
-  - Cadastro com validação de nome, CNPJ e e-mail de contato (opcional)
-
-- Ativos
-  - Lista por cliente (via Clients → Ativos) ou global com escopo (aba Ativos)
-  - Cadastro exige selecionar um Local (localId) e vincula clienteId
-
-- Ordens de Serviço
-  - Lista global (aba Serviços) ou filtrada por cliente/ativo quando navegada de um contexto
-  - Criar/editar/concluir; badge de status e datas (agendada/conclusão)
+  * `userToken`, `userEmail`, `userRole`, `userId`, `userClientId`
+* `api.js` injeta o cabeçalho `Authorization: Bearer <token>`
+* Erro **401 Unauthorized** → sessão limpa e retorno automático ao login
 
 ---
 
-## Convenções rápidas
+## 🧠 Escopo por Cliente
 
-- Services mapeiam campos de backend para o front (ex.: 
-ome → 
-ame), preservando originais
-- Evite acessar 
-ome diretamente nas telas novas; prefira 
-ame (ou 
-ame || nome para compatibilidade)
-- Use useFocusEffect para refetch ao voltar a uma lista
+Se o token JWT contiver `clientId` (ou `clienteId`), o app restringe:
+
+* Listagens de **Clientes, Ativos e Serviços**
+* Criação de OS com vínculo automático a `clienteId`
 
 ---
 
-## Roadmap
+## 📡 Endpoints Esperados (Backend)
 
-- Paginação e busca server-side em Ativos e Serviços
-- Detalhes (modais) para Ativo e OS
-- CRUD completo de Tipos de Serviço e Usuários (admin)
-- Migração de token para SecureStore (Expo)
+| Módulo       | Método | Rota                               | Descrição              |
+| ------------ | ------ | ---------------------------------- | ---------------------- |
+| **Auth**     | POST   | `/auth/login`                      | Login com e-mail/senha |
+|              | POST   | `/auth/register`                   | Registro de usuário    |
+| **Clientes** | CRUD   | `/v1/clientes`                     | Gestão de clientes     |
+| **Ativos**   | CRUD   | `/v1/ativos?clienteId=`            | Gestão de ativos       |
+| **Serviços** | CRUD   | `/v1/servicos?clienteId=&ativoId=` | Ordens de serviço      |
+| **Locais**   | GET    | `/v1/locais`                       | Seleção de locais      |
+
+---
+
+## 🔄 Fluxos Principais
+
+### 👥 **Clientes**
+
+* Listagem filtrada (por escopo de cliente do usuário)
+* Cadastro com validação de campos obrigatórios
+
+### ⚙️ **Ativos**
+
+* Lista global ou por cliente
+* Cadastro requer `localId` e `clienteId`
+
+### 🧰 **Ordens de Serviço**
+
+* Listagem global ou filtrada (cliente/ativo)
+* Criação, edição e conclusão com badges de status
+
+---
+
+## 🧩 Convenções e Boas Práticas
+
+* **Services** normalizam campos do backend → frontend (`numero_serie → numeroSerie`)
+* Evite usar dados brutos; use campos mapeados
+* Utilize `useFocusEffect` para recarregar dados ao voltar às telas
+* Centralize requisições no `api.js` com interceptors e timeout
+
+---
+
+## 🗺️ Roadmap
+
+* [ ] Paginação e busca **server-side**
+* [ ] Telas de **detalhe** para Ativos e OS
+* [ ] CRUD completo de **Tipos de Serviço** e **Usuários (admin)**
+* [ ] Armazenamento seguro com **SecureStore (Expo)**
+* [ ] Upload de imagens (ativos/usuários)
+
+---
+
+## 👨‍💻 Autor
+
+**Érico de Freitas Neto**
+📍 Líder Técnico em Sistemas Embarcados e Videomonitoramento
+🔗 [GitHub – EricofreitasNeto](https://github.com/EricofreitasNeto)
+📧 [erico@exemplo.com](mailto:erico@exemplo.com)
+🧠 [LinkedIn – Erico de Freitas Neto](https://www.linkedin.com/in/ericodefreitasneto/)
+
+---
+
+## 🧾 Licença
+
+Este projeto está sob a licença **MIT**.
+Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 💬 Preview
+
+<p align="esquerda">
+  <img src="https://img.shields.io/badge/React%20Navigation-Tabs%20%2B%20Stacks-blue?logo=react" alt="Navegação">
+  <br/>
+  <img src="https://img.shields.io/badge/Theme-Claro%2FEscuro-green" alt="Tema">
+  <br/>
+  <img src="https://img.shields.io/badge/API-RESTful-lightgrey" alt="API">
+</p>
+
+---
+
+> 📦 Repositório complementar:
+> [👉 Gestão Fácil Backend (API REST)](https://github.com/EricofreitasNeto/GestaoFacil)
+
+---
+
