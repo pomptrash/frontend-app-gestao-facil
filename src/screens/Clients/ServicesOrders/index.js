@@ -5,11 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useMemo } from "react";
 import { useServiceOrders } from "../../../contexts/serviceOrders/ServiceOrdersContext";
+import { useAuthContext } from "../../../contexts/auth/AuthContext";
 
 export function ServicesOrders({ route }) {
   const { theme } = useTheme();
   const navigation = useNavigation();
   const { orders, loading, error, fetchOrders } = useServiceOrders();
+  const { user } = useAuthContext();
 
   const client = route?.params?.client;
   const asset = route?.params?.asset;
@@ -17,15 +19,16 @@ export function ServicesOrders({ route }) {
 
   useEffect(() => {
     if (asset?.id) {
-      // Backend filtra por ativoId
       fetchOrders({ ativoId: asset.id });
     } else if (client?.id) {
-      // Backend filtra por clienteId
       fetchOrders({ clienteId: client.id });
+    } else if (user?.clientId || user?.clienteId) {
+      // Sem contexto explícito, restringe aos serviços do cliente do usuário
+      fetchOrders({ clienteId: user.clientId || user.clienteId });
     } else {
       fetchOrders();
     }
-  }, [asset?.id, client?.id]);
+  }, [asset?.id, client?.id, user?.clientId]);
 
   const data = useMemo(() => orders, [orders]);
 
@@ -75,11 +78,15 @@ export function ServicesOrders({ route }) {
           onRefresh={() => {
             if (asset?.id) return fetchOrders({ ativoId: asset.id });
             if (client?.id) return fetchOrders({ clienteId: client.id });
+            if (user?.clientId || user?.clienteId) return fetchOrders({ clienteId: user.clientId || user.clienteId });
             return fetchOrders();
           }}
           refreshing={loading}
           renderItem={({ item }) => (
-            <TouchableOpacity style={[style.servicesData, { backgroundColor: theme.card }]}>
+            <TouchableOpacity
+              style={[style.servicesData, { backgroundColor: theme.card }]}
+              onPress={() => navigation.navigate("NewServiceOrder", { asset, client, order: item })}
+            > 
               <Text style={[style.serviceDataTitle, { color: theme.text }]}>
                 <Feather name="tool" size={24} /> - {item.descricao}
               </Text>
@@ -123,4 +130,3 @@ export function ServicesOrders({ route }) {
     </View>
   );
 }
-

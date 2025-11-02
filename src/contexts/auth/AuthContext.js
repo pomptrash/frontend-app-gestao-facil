@@ -1,34 +1,35 @@
 import React, { createContext, useContext } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
-const AuthContext = createContext();
+// 🔒 Cria o contexto global de autenticação
+const AuthContext = createContext(null);
 
+/**
+ * Provedor de autenticação global
+ * Expõe o estado e funções retornadas por useAuth()
+ */
 export const AuthProvider = ({ children }) => {
   const auth = useAuth();
-  console.log("📡 [AuthProvider] Montado — expondo funções:", Object.keys(auth));
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+
+  // Log opcional de depuração (evita erros se 'auth' for undefined)
+  if (auth && typeof auth === "object") {
+    console.log("📡 [AuthProvider] Inicializado — funções disponíveis:", Object.keys(auth));
+  }
+
+  return (
+    <AuthContext.Provider value={auth}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
+/**
+ * Hook personalizado para acessar o contexto de autenticação
+ */
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuthContext deve ser usado dentro de um AuthProvider");
-  return context;
-};
-import React, { createContext, useContext } from "react";
-import { useAuth } from "../../hooks/useAuth";
-
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-  const auth = useAuth();
-  try {
-    console.log("[AuthProvider] ready:", Object.keys(auth));
-  } catch {}
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-};
-
-export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuthContext deve ser usado dentro de um AuthProvider");
+  if (!context) {
+    throw new Error("❗ useAuthContext deve ser usado dentro de um <AuthProvider>.");
+  }
   return context;
 };

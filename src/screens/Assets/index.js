@@ -1,23 +1,25 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
-import { useTheme } from "../../../contexts/theme/ThemeContext";
-import ativoService from "../../../service/ativoService";
-import { Feather } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
+import { useTheme } from "../../contexts/theme/ThemeContext";
+import { useAuthContext } from "../../contexts/auth/AuthContext";
+import { useNavigation } from "@react-navigation/native";
+import ativoService from "../../service/ativoService";
 
-export function ClientAssets({ route, navigation }) {
-  const { client } = route.params;
+export function Assets() {
   const { theme } = useTheme();
+  const { user } = useAuthContext();
+  const navigation = useNavigation();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const fetchAssets = async () => {
-    if (!client?.id) return;
     setLoading(true);
     setError("");
     try {
-      const data = await ativoService.listarAtivosPorCliente(client.id);
+      const filters = {};
+      if (user?.clientId || user?.clienteId) filters.clienteId = user.clientId || user.clienteId;
+      const data = await ativoService.listarAtivos(filters);
       setAssets(Array.isArray(data) ? data : []);
     } catch (e) {
       setError(e?.message || "Falha ao carregar ativos");
@@ -28,54 +30,16 @@ export function ClientAssets({ route, navigation }) {
 
   useEffect(() => {
     fetchAssets();
-  }, [client?.id]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchAssets();
-    }, [client?.id])
-  );
-
-  const header = useMemo(() => (
-    <View style={{ padding: 16 }}>
-      <Text style={{ color: theme.text, fontSize: 20, fontWeight: "bold" }}>
-        Ativos do cliente: {client?.nome || client?.name}
-      </Text>
-    </View>
-  ), [client, theme]);
+  }, [user?.clientId]);
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }}>
-      <TouchableOpacity
-        style={{
-          backgroundColor: theme.primary,
-          borderRadius: 25,
-          height: 50,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          bottom: 25,
-          right: 25,
-          zIndex: 10,
-          padding: 8,
-          gap: 8,
-        }}
-        onPress={() => navigation.navigate("NewAsset", { client })}
-      >
-        <Feather name="plus" size={32} color={"white"} />
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>Adicionar Ativo</Text>
-      </TouchableOpacity>
-
-      {header}
-
       {loading && (
         <ActivityIndicator size="large" color={theme.primary} style={{ marginTop: 40 }} />
       )}
       {!!error && (
         <Text style={{ color: "red", textAlign: "center", marginVertical: 10 }}>{error}</Text>
       )}
-
       {!loading && assets.length === 0 ? (
         <Text style={{ color: theme.text, textAlign: "center", marginTop: 16 }}>
           Nenhum ativo encontrado
@@ -97,7 +61,7 @@ export function ClientAssets({ route, navigation }) {
                 padding: 12,
                 marginVertical: 6,
               }}
-              onPress={() => navigation.navigate("ServicesOrders", { client, asset: item })}
+              onPress={() => navigation.navigate("ServicesOrders", { asset: item, AllServices: false })}
             >
               <Text style={{ color: theme.text, fontSize: 18, fontWeight: "bold" }}>{item.name || item.nome}</Text>
               {!!item.numeroSerie && (
@@ -113,3 +77,4 @@ export function ClientAssets({ route, navigation }) {
     </View>
   );
 }
+

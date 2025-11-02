@@ -56,6 +56,21 @@ export function ServiceOrdersProvider({ children }) {
     }
   };
 
+  const completeOrder = async (id, extra = {}) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const completed = await servicoService.concluirServico(id, extra);
+      await fetchOrders(lastFiltersRef.current);
+      return completed;
+    } catch (err) {
+      setError(err?.message || "Falha ao concluir serviço.");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
       setOrders([]);
@@ -65,7 +80,7 @@ export function ServiceOrdersProvider({ children }) {
 
   return (
     <ServiceOrdersContext.Provider
-      value={{ orders, loading, error, fetchOrders, createOrder, updateOrder }}
+      value={{ orders, loading, error, fetchOrders, createOrder, updateOrder, completeOrder }}
     >
       {children}
     </ServiceOrdersContext.Provider>
@@ -77,4 +92,3 @@ export function useServiceOrders() {
   if (!ctx) throw new Error("useServiceOrders deve ser usado dentro de um ServiceOrdersProvider");
   return ctx;
 }
-

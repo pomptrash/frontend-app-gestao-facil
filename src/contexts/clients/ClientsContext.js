@@ -5,7 +5,7 @@ import clienteService from "../../service/clienteService";
 const ClientsContext = createContext();
 
 export function ClientsProvider({ children }) {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,8 +15,15 @@ export function ClientsProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const data = await clienteService.listarClientes(filtros);
-      setClients(Array.isArray(data) ? data : []);
+      // Se o usuário estiver vinculado a um cliente específico, restringe àquele cliente
+      const targetClientId = user?.clientId || user?.clienteId;
+      if (targetClientId) {
+        const data = await clienteService.obterCliente(targetClientId);
+        setClients(data ? [data] : []);
+      } else {
+        const data = await clienteService.listarClientes(filtros);
+        setClients(Array.isArray(data) ? data : []);
+      }
     } catch (err) {
       setError(err?.message || "Falha ao carregar clientes.");
     } finally {
@@ -31,7 +38,7 @@ export function ClientsProvider({ children }) {
       setClients([]);
       setError(null);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user?.clientId]);
 
   return (
     <ClientsContext.Provider value={{ clients, loading, error, fetchClients }}>
@@ -45,4 +52,3 @@ export function useClients() {
   if (!ctx) throw new Error("useClients deve ser usado dentro de um ClientsProvider");
   return ctx;
 }
-

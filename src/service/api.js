@@ -29,6 +29,16 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+// Unauthorized listeners to propagate 401 events to the app
+const unauthorizedListeners = new Set();
+export function addUnauthorizedListener(listener) {
+  if (typeof listener === "function") {
+    unauthorizedListeners.add(listener);
+    return () => unauthorizedListeners.delete(listener);
+  }
+  return () => {};
+}
+
 // Adiciona token JWT automaticamente em cada requisição
 api.interceptors.request.use(async (config) => {
   const token = await tokenService.getToken();
@@ -42,6 +52,10 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       await tokenService.clearAuthData();
+      // Notify subscribers to update UI/auth state immediately
+      unauthorizedListeners.forEach((fn) => {
+        try { fn(); } catch {}
+      });
     }
     return Promise.reject(error);
   }

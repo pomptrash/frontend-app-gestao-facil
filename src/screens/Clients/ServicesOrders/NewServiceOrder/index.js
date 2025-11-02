@@ -1,6 +1,6 @@
 import { View, Text, Alert } from "react-native";
 import { useTheme } from "../../../../contexts/theme/ThemeContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "../../../../components/Input";
 import { Button } from "../../../../components/Button";
@@ -12,25 +12,46 @@ export function NewServiceOrder({ route }) {
   const [description, setDescription] = useState("");
   const [inputDate, setInputDate] = useState(null);
   const navigation = useNavigation();
-  const { asset, client } = route.params || {};
+  const { asset, client, order } = route.params || {};
   const { theme } = useTheme();
-  const { createOrder, loading } = useServiceOrders();
+  const { createOrder, updateOrder, completeOrder, loading } = useServiceOrders();
 
-  const handleCreate = async () => {
+  useEffect(() => {
+    if (order?.id) {
+      setDescription(order.descricao || "");
+      setInputDate(order.dataAgendada ? new Date(order.dataAgendada) : null);
+    }
+  }, [order?.id]);
+
+  const handleSave = async () => {
     if (!description || !inputDate) {
       Alert.alert("Campos obrigatórios", "Informe descrição e data.");
       return;
     }
     try {
-      await createOrder({
-        descricao: description,
-        dataAgendada: inputDate,
-        ativoId: asset?.id,
-        clienteId: client?.id,
-      });
+      if (order?.id) {
+        await updateOrder(order.id, { descricao: description, dataAgendada: inputDate });
+      } else {
+        await createOrder({
+          descricao: description,
+          dataAgendada: inputDate,
+          ativoId: asset?.id,
+          clienteId: client?.id,
+        });
+      }
       navigation.goBack();
     } catch (e) {
-      Alert.alert("Erro", e?.message || "Falha ao criar serviço");
+      Alert.alert("Erro", e?.message || (order?.id ? "Falha ao atualizar serviço" : "Falha ao criar serviço"));
+    }
+  };
+
+  const handleComplete = async () => {
+    if (!order?.id) return;
+    try {
+      await completeOrder(order.id);
+      navigation.goBack();
+    } catch (e) {
+      Alert.alert("Erro", e?.message || "Falha ao concluir serviço");
     }
   };
 
@@ -89,12 +110,22 @@ export function NewServiceOrder({ route }) {
       </View>
 
       <Button
-        btnText={loading ? "Criando..." : "Criar Serviço"}
+        btnText={loading ? (order?.id ? "Salvando..." : "Criando...") : (order?.id ? "Salvar alterações" : "Criar Serviço")}
         style={[style.btn, { backgroundColor: theme.primary }]}
         textStyle={style.btnText}
-        onPress={handleCreate}
+        onPress={handleSave}
         disabled={loading}
       />
+
+      {order?.id && order?.status !== 'Concluído' && (
+        <Button
+          btnText={loading ? "Concluindo..." : "Concluir Serviço"}
+          style={[style.btn, { backgroundColor: theme.success || theme.primary }]}
+          textStyle={style.btnText}
+          onPress={handleComplete}
+          disabled={loading}
+        />
+      )}
     </View>
   );
 }

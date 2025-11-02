@@ -12,13 +12,13 @@ import { useAuthContext } from "../../contexts/auth/AuthContext";
 import { useClients } from "../../contexts/clients/ClientsContext";
 import { style } from "./style";
 import { ClientCard } from "../../components/ClientCard";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 export function Clients() {
   const navigation = useNavigation();
   const { theme } = useTheme();
-  const { logout } = useAuthContext();
+  const { logout, user } = useAuthContext();
   const { clients, loading, error, fetchClients } = useClients();
 
   const [searchClient, setSearchClient] = useState("");
@@ -30,13 +30,17 @@ export function Clients() {
     }
   }, [error]);
 
-  const filteredClient = clients.filter((client) =>
-    client.nome?.toLowerCase().includes(searchClient.toLowerCase())
+  // Refetch ao focar
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchClients({ q: searchClient, page: 1, limit: 20 });
+    }, [searchClient])
   );
 
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
       {/* BOTÃO NOVO CLIENTE */}
+      {!(user?.clientId || user?.clienteId) && (
       <TouchableOpacity
         style={{
           backgroundColor: theme.primary,
@@ -59,6 +63,7 @@ export function Clients() {
           Adicionar Cliente
         </Text>
       </TouchableOpacity>
+      )}
 
       {/* CABEÇALHO */}
       <View style={style.header}>
@@ -89,22 +94,17 @@ export function Clients() {
       )}
 
       {/* LISTA */}
-      {!loading && filteredClient.length === 0 ? (
+      {!loading && clients.length === 0 ? (
         <Text style={[style.notFoundText, { color: theme.text }]}>
           Nenhum cliente localizado
         </Text>
       ) : (
         <FlatList
           style={style.clients}
-          data={filteredClient}
+          data={clients}
           renderItem={({ item }) => (
             <ClientCard
-              client={{
-                id: item.id,
-                name: item.nome,
-                cnpj: item.cnpj,
-                contatos: item.contatos,
-              }}
+              client={item}
               featherIcon={"user"}
               onPress={() =>
                 navigation.navigate("ClientAssets", { client: item })

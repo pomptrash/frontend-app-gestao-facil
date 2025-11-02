@@ -2,7 +2,7 @@
 import { decode as atob } from 'base-64';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const KEYS = ["userToken", "userEmail", "userRole", "userId"];
+const KEYS = ["userToken", "userEmail", "userRole", "userId", "userClientId"];
 
 async function debugDump(label) {
   try {
@@ -39,12 +39,13 @@ class TokenService {
   }
 
   async getUserData() {
-    const [id, email, role] = await Promise.all([
+    const [id, email, role, clientId] = await Promise.all([
       AsyncStorage.getItem("userId"),
       AsyncStorage.getItem("userEmail"),
       AsyncStorage.getItem("userRole"),
+      AsyncStorage.getItem("userClientId"),
     ]);
-    return { id, email, role };
+    return { id, email, role, clientId };
   }
 
   async setAuthData(token, extra = {}) {
@@ -56,6 +57,7 @@ class TokenService {
         ["userEmail", payload.email || extra.email || ""],
         ["userRole", payload.cargo || extra.role || ""],
         ["userId", (payload.id ?? extra.id ?? "").toString()],
+        ["userClientId", (payload.clienteId ?? payload.clientId ?? extra.clienteId ?? extra.clientId ?? "").toString()],
       ]);
       await debugDump("após setAuthData");
     } finally {

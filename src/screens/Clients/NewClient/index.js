@@ -1,10 +1,12 @@
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import { useTheme } from "../../../contexts/theme/ThemeContext";
 import { useClients } from "../../../contexts/clients/ClientsContext";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useState } from "react";
 import { style } from "./style";
+import { useNavigation } from "@react-navigation/native";
+import clienteService from "../../../service/clienteService";
 
 export function NewClient({ route }) {
   const [clientName, setClientName] = useState("");
@@ -13,6 +15,39 @@ export function NewClient({ route }) {
 
   const { clients } = useClients();
   const { theme } = useTheme();
+  const navigation = useNavigation();
+
+  const validate = () => {
+    if (!clientName.trim()) return "Informe o nome do cliente";
+    const cnpjDigits = (cnpj || "").replace(/\D/g, "");
+    if (cnpjDigits.length !== 14) return "CNPJ inválido";
+    if (clientContact) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(clientContact)) return "E-mail inválido";
+    }
+    return null;
+  };
+
+  const handleCreate = async () => {
+    const error = validate();
+    if (error) {
+      Alert.alert("Validação", error);
+      return;
+    }
+    try {
+      const payload = {
+        nome: clientName.trim(),
+        cnpj: cnpj.replace(/\D/g, ""),
+        contatos: clientContact ? [{ email: clientContact }] : [],
+      };
+      await clienteService.criarCliente(payload);
+      Alert.alert("Sucesso", "Cliente criado com sucesso", [
+        { text: "OK", onPress: () => navigation.goBack() },
+      ]);
+    } catch (e) {
+      Alert.alert("Erro", e?.message || "Falha ao criar cliente");
+    }
+  };
 
   return (
     <View
@@ -53,6 +88,7 @@ export function NewClient({ route }) {
         btnText={"Adicionar Cliente"}
         style={[style.btn, { backgroundColor: theme.primary }]}
         textStyle={style.btnText}
+        onPress={handleCreate}
       />
     </View>
   );

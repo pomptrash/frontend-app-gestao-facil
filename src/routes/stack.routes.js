@@ -11,6 +11,10 @@ import { ClientAssets } from "../screens/Clients/ClientAssets";
 import { NewServiceOrder } from "../screens/Clients/ServicesOrders/NewServiceOrder";
 import { NewAsset } from "../screens/Clients/ClientAssets/NewAsset";
 import { NewClient } from "../screens/Clients/NewClient";
+import { More } from "../screens/More";
+import { Locations } from "../screens/Locations";
+import { ServiceTypes } from "../screens/ServiceTypes";
+import { Users } from "../screens/Users";
 
 // 🎨 Contextos globais
 import { useTheme } from "../contexts/theme/ThemeContext";
@@ -73,6 +77,9 @@ export function StackRoutes() {
             component={NewClient}
             options={{ headerTitle: "Novo Cliente" }}
           />
+          <Stack.Screen name="Locations" component={Locations} options={{ headerTitle: "Locais" }} />
+          <Stack.Screen name="ServiceTypes" component={ServiceTypes} options={{ headerTitle: "Tipos de Serviço" }} />
+          <Stack.Screen name="Users" component={Users} options={{ headerTitle: "Usuários" }} />
         </>
       ) : (
         <>
@@ -91,3 +98,5 @@ export function StackRoutes() {
     </Stack.Navigator>
   );
 }
+
+
