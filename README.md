@@ -1,171 +1,163 @@
-# 📱 Gestão Fácil App
+﻿# Gestão Fácil — App Mobile
 
-Aplicativo móvel desenvolvido em **React Native**, focado na **gestão de clientes, ativos e ordens de serviço (OS)**.
-O projeto integra autenticação de usuários, cadastro de clientes e serviços, e comunicação com uma API backend.
-
----
-
-## 🚀 Funcionalidades Principais
-
-* **Autenticação** de usuários (login e cadastro)
-* **Gerenciamento de clientes** (listagem, cadastro, edição)
-* **Gestão de ativos** por cliente
-* **Criação e acompanhamento de ordens de serviço (OS)**
-* **Navegação moderna** com rotas em abas e pilha (`react-navigation`)
-* **Temas dinâmicos** (modo claro/escuro)
-* **Feedback visual** com componentes reutilizáveis
-* **Integração com API REST**
+Aplicativo mobile (Expo/React Native) para gestão de Clientes, Ativos e Ordens de Serviço (OS), com autenticação via JWT, controle de acesso por cliente e navegação fluida em abas/stacks.
 
 ---
 
-## 🧩 Estrutura de Pastas (Diagrama)
+## Funcionalidades
 
-```text
-estrutura_projeto_app/
-├── App.js
-├── index.js
-├── app.json
-├── package.json
-├── package-lock.json
-├── .gitignore
-└── src/
-    ├── components/
-    │   ├── Button/
-    │   ├── ClientCard/
-    │   ├── Input/
-    │   └── Loading/
-    │
-    ├── contexts/
-    │   ├── clients/
-    │   └── theme/
-    │
-    ├── hooks/
-    │   └── useAuth.js
-    │
-    ├── routes/
-    │   ├── index.js
-    │   ├── stack.routes.js
-    │   └── tab.routes.js
-    │
-    ├── screens/
-    │   ├── Auth/
-    │   ├── Home/
-    │   ├── Clients/
-    │   │   ├── ClientAssets/
-    │   │   ├── NewClient/
-    │   │   └── ServicesOrders/
-    │   └── Options/
-    │
-    └── service/
-        ├── api.js
-        ├── authService.js
-        ├── clienteService.js
-        ├── servicoService.js
-        └── tokenService.js
-```
+- Autenticação (Login/Registro) com persistência de sessão (JWT)
+- Clientes: listagem, cadastro e navegação para ativos e OS
+- Ativos: listagem (com escopo por cliente) e criação vinculada a Local
+- Ordens de Serviço: listagem global/por cliente/por ativo, criação, atualização e conclusão
+- Locais: listagem para seleção no cadastro de Ativo
+- Navegação moderna com React Navigation (Tabs + Stacks)
+- Tema claro/escuro e componentes reutilizáveis
 
 ---
 
-## 🧠 Contextos e Hooks
+## Tecnologias
 
-| Contexto           | Descrição                                          |
-| ------------------ | -------------------------------------------------- |
-| **ClientsContext** | Armazena e gerencia os dados de clientes e ativos. |
-| **ThemeContext**   | Controla modo claro/escuro.                        |
-| **useAuth**        | Gerencia sessão, login, logout e tokens.           |
-
----
-
-## ⚙️ Integração com API
-
-O app utiliza serviços em `src/service/` para se comunicar com o backend via **Axios**.
-
-Endpoints esperados:
-
-* `/auth/login`
-* `/auth/register`
-* `/clientes`
-* `/servicos`
-* `/ordens`
+- Expo + React Native
+- React Navigation (stack + bottom-tabs)
+- Axios (interceptors com JWT)
+- AsyncStorage (persistência de token); suporte a SecureStore opcional
+- React Context (Auth, Theme, Clients, ServiceOrders)
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Requisitos e Variáveis de Ambiente
 
-| Categoria                   | Tecnologias                     |
-| --------------------------- | ------------------------------- |
-| **Framework principal**     | React Native                    |
-| **Navegação**               | React Navigation (Stack / Tabs) |
-| **Gerenciamento de estado** | Context API                     |
-| **Estilização**             | Styled Components               |
-| **Requisições HTTP**        | Axios                           |
-| **Autenticação**            | JWT                             |
-| **Temas**                   | Context API + Styled Components |
+- Node.js 18+
+- Expo CLI
+- Backend disponível com rotas REST (ver Endpoints)
 
----
+Arquivo .env na raiz:
 
-## ▶️ Como Executar
+`
+EXPO_PUBLIC_API_URL=https://seu-backend.exemplo.com
+`
 
-1. **Instale as dependências**
-
-   ```bash
-   npm install
-   ```
-2. **Configure a API**
-
-   ```js
-   // src/service/api.js
-   export const api = axios.create({
-     baseURL: "http://<seu-servidor>:<porta>/api",
-   });
-   ```
-3. **Inicie o app**
-
-   ```bash
-   npm start
-   ```
-4. **Execute em um emulador ou dispositivo físico**
-
-   * via Expo Go (caso projeto use Expo)
-   * ou via Android Studio / Xcode
+src/service/api.js resolve a aseURL a partir de EXPO_PUBLIC_API_URL e faz fallback por plataforma (ex.: Android emulador → 10.0.2.2:3000).
 
 ---
 
-## 🧪 Scripts Disponíveis
+## Como Executar
 
-| Comando           | Descrição            |
-| ----------------- | -------------------- |
-| `npm start`       | Inicia o app         |
-| `npm run android` | Executa no Android   |
-| `npm run ios`     | Executa no iOS       |
-| `npm run web`     | Executa no navegador |
+1) Instalar dependências
 
----
+`
+npm install
+`
 
-## 📦 Dependências Principais
+2) Iniciar o app
 
-* react
-* react-native
-* react-navigation
-* styled-components
-* axios
-* @react-navigation/native
-* @react-navigation/stack
-* @react-navigation/bottom-tabs
+`
+npm start
+`
 
----
+3) Abrir em dispositivo/emulador
 
-## 👨‍💻 Autores
+- Expo Go (QR code)
+- Android Studio / Xcode
 
-**João Pompeu**
-Desenvolvedor Front End | React, React Native, Next.JS 
-
-
-**Érico Freitas Neto**
-Desenvolvedor Full Stack | Backend Flask e Node.js | Integrações IoT e Sistemas de Gestão
+Scripts úteis (package.json): start, ndroid, ios, web.
 
 ---
 
-## 📝 Licença
+## Estrutura do Projeto (resumo)
 
-Este projeto está licenciado sob a **MIT License**.
+`
+src/
+  routes/
+    index.js
+    stack.routes.js
+    tab.routes.js
+  screens/
+    Auth/ (Login, SignUp)
+    Clients/ (lista, ativos, OS, novo cliente)
+    Clients/ClientAssets/NewAsset/ (cadastro de ativo com local)
+    Clients/ServicesOrders/ (lista/criar/editar OS)
+    Assets/ (lista global por escopo)
+    Locations/ (lista para seleção)
+    ServiceTypes/ (placeholder)
+    Users/ (placeholder admin)
+    Home/, Options/
+  contexts/
+    auth/, clients/, serviceOrders/, theme/
+  service/
+    api.js, authService.js, tokenService.js
+    clienteService.js, ativoService.js, servicoService.js, localService.js
+  components/ (Button, Input, ClientCard, Loading ...)
+`
+
+---
+
+## Navegação
+
+- Auth Stack: Login, SignUp
+- App Tabs:
+  - Dashboard (Home)
+  - Clientes (lista e busca)
+  - Serviços (lista global; filtra por cliente/ativo quando navegada por contexto)
+  - Ativos (lista por escopo do cliente do usuário)
+  - Mais (submenu: Locais, Tipos de Serviço, Usuários admin)
+
+---
+
+## Autenticação e Segurança
+
+- AuthContext expõe user, isAuthenticated, login, logout, checkAuth
+- 	okenService persiste userToken, userEmail, userRole, userId, userClientId
+- pi.js injeta Authorization: Bearer <token> e, em 401, limpa sessão e notifica listeners
+
+Escopo por cliente: se o JWT contiver clienteId/clientId, o app restringe listagens/CRUD a esse cliente (Clientes, Ativos, Serviços).
+
+---
+
+## Endpoints (esperados no backend)
+
+- Autenticação: POST /auth/login, POST /auth/register
+- Clientes: GET /v1/clientes, GET /v1/clientes/:id, POST /v1/clientes, PUT /v1/clientes/:id, DELETE /v1/clientes/:id
+- Ativos: GET /v1/ativos?clienteId=, POST /v1/ativos (payload com 
+ome, clienteId, localId)
+- Serviços: GET /v1/servicos?clienteId=&ativoId=, POST /v1/servicos, PUT /v1/servicos/:id
+- Locais: GET /v1/locais
+
+---
+
+## Fluxos Principais
+
+- Clientes
+  - Lista filtrável; se user.clientId existir, mostra apenas o cliente do usuário
+  - Cadastro com validação de nome, CNPJ e e-mail de contato (opcional)
+
+- Ativos
+  - Lista por cliente (via Clients → Ativos) ou global com escopo (aba Ativos)
+  - Cadastro exige selecionar um Local (localId) e vincula clienteId
+
+- Ordens de Serviço
+  - Lista global (aba Serviços) ou filtrada por cliente/ativo quando navegada de um contexto
+  - Criar/editar/concluir; badge de status e datas (agendada/conclusão)
+
+---
+
+## Convenções rápidas
+
+- Services mapeiam campos de backend para o front (ex.: 
+ome → 
+ame), preservando originais
+- Evite acessar 
+ome diretamente nas telas novas; prefira 
+ame (ou 
+ame || nome para compatibilidade)
+- Use useFocusEffect para refetch ao voltar a uma lista
+
+---
+
+## Roadmap
+
+- Paginação e busca server-side em Ativos e Serviços
+- Detalhes (modais) para Ativo e OS
+- CRUD completo de Tipos de Serviço e Usuários (admin)
+- Migração de token para SecureStore (Expo)
