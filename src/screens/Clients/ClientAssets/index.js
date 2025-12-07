@@ -36,6 +36,9 @@ export function ClientAssets({ route, navigation }) {
     }, [client?.id])
   );
 
+  // const clientAssets = assets.filter((asset) => asset.)
+
+  
   const header = useMemo(() => (
     <View style={{ padding: 16 }}>
       <Text style={{ color: theme.text, fontSize: 20, fontWeight: "bold" }}>

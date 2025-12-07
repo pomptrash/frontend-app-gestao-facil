@@ -28,7 +28,9 @@ export function More() {
   return (
     <View style={{ flex: 1, padding: 16, backgroundColor: theme.background }}>
       <Item title="Locais" onPress={() => navigation.navigate('Locations')} />
-      <Item title="Tipos de Serviço" onPress={() => navigation.navigate('ServiceTypes')} />
+      <Item title="Opções" onPress={() => navigation.navigate('Options')} />
+
+      {/* <Item title="Tipos de Serviço" onPress={() => navigation.navigate('ServiceTypes')} /> */}
       {user?.role === 'admin' && (
         <Item title="Usuários" onPress={() => navigation.navigate('Users')} />
       )}

@@ -15,6 +15,7 @@ import { More } from "../screens/More";
 import { Locations } from "../screens/Locations";
 import { ServiceTypes } from "../screens/ServiceTypes";
 import { Users } from "../screens/Users";
+import { Options } from "../screens/Options";
 
 // 🎨 Contextos globais
 import { useTheme } from "../contexts/theme/ThemeContext";
@@ -80,6 +81,9 @@ export function StackRoutes() {
           <Stack.Screen name="Locations" component={Locations} options={{ headerTitle: "Locais" }} />
           <Stack.Screen name="ServiceTypes" component={ServiceTypes} options={{ headerTitle: "Tipos de Serviço" }} />
           <Stack.Screen name="Users" component={Users} options={{ headerTitle: "Usuários" }} />
+          <Stack.Screen name="Options" component={Options} options={{ headerTitle: "Opções" }} />
+
+          
         </>
       ) : (
         <>

@@ -40,7 +40,7 @@ export function TabRoutes() {
             case "Clientes":
               iconName = "people-outline";
               break;
-            case "Serviços":
+            case "Serviï¿½os":
               iconName = "construct-outline";
               break;
             case "Ativos":
@@ -58,9 +58,10 @@ export function TabRoutes() {
     >
       <Tab.Screen name="Dashboard" component={Home} />
       <Tab.Screen name="Clientes" component={Clients} />
-      <Tab.Screen name="Serviços" component={ServicesOrders} initialParams={{ AllServices: true }} />
-      <Tab.Screen name="Ativos" component={Assets} />
+      {/* <Tab.Screen name="Serviï¿½os" component={ServicesOrders} initialParams={{ AllServices: true }} />
+      <Tab.Screen name="Ativos" component={Assets} /> */}
       <Tab.Screen name="Mais" component={More} />
+
     </Tab.Navigator>
   );
 }

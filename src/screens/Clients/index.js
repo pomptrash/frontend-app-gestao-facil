@@ -37,6 +37,10 @@ export function Clients() {
     }, [searchClient])
   );
 
+  const filteredClient = clients.filter((client) =>
+    client.name.toLowerCase().includes(searchClient.toLowerCase())
+  );
+
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
       {/* BOTÃO NOVO CLIENTE */}
@@ -101,7 +105,7 @@ export function Clients() {
       ) : (
         <FlatList
           style={style.clients}
-          data={clients}
+          data={filteredClient}
           renderItem={({ item }) => (
             <ClientCard
               client={item}
@@ -111,7 +115,7 @@ export function Clients() {
               }
             />
           )}
-          keyExtractor={(client) => client.id.toString()}
+          keyExtractor={(client) => client.id}
           onRefresh={fetchClients}
           refreshing={loading}
         />

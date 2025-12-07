@@ -32,6 +32,12 @@ export function ServicesOrders({ route }) {
 
   const data = useMemo(() => orders, [orders]);
 
+  const filteredOrders = asset
+  ? orders.filter((order) => order.ativoId === asset.id)
+  : client.services;
+
+  console.log(asset)
+
   return (
     <View style={[style.container, { backgroundColor: theme.background }]}>
       {!AllServices && asset?.id && (
@@ -61,7 +67,7 @@ export function ServicesOrders({ route }) {
         <Text style={{ color: "red", textAlign: "center", margin: 10 }}>{error}</Text>
       )}
 
-      {!loading && (!data || data.length === 0) ? (
+      {!loading && (!filteredOrders || filteredOrders.length === 0) ? (
         <Text
           style={[
             { textAlign: "center", fontSize: 24, fontWeight: "bold", padding: 8, color: theme.text },
@@ -74,7 +80,7 @@ export function ServicesOrders({ route }) {
       ) : (
         <FlatList
           style={style.services}
-          data={data}
+          data={filteredOrders}
           onRefresh={() => {
             if (asset?.id) return fetchOrders({ ativoId: asset.id });
             if (client?.id) return fetchOrders({ clienteId: client.id });
