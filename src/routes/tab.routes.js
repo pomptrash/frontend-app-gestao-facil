@@ -56,7 +56,7 @@ export function TabRoutes() {
         },
       })}
     >
-      <Tab.Screen name="Dashboard" component={Home} />
+      {/* <Tab.Screen name="Dashboard" component={Home} /> */}
       <Tab.Screen name="Clientes" component={Clients} />
       {/* <Tab.Screen name="Servi�os" component={ServicesOrders} initialParams={{ AllServices: true }} />
       <Tab.Screen name="Ativos" component={Assets} /> */}

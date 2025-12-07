@@ -71,18 +71,18 @@ export function NewClient({ route }) {
       <Input
         onChangeText={setCnpj}
         value={cnpj}
-        placeholder={"CNPJ"}
+        placeholder={"CNPJ (xx.xxx.xxx/xxxx-xx)"}
         color={theme.text}
         placeHolderColor={theme.text}
-        type={"numeric"}
+        type={"default"}
       />
       <Input
         onChangeText={setClientContact}
         value={clientContact}
-        placeholder={"Email"}
+        placeholder={"Contatos (Email/Telefone)"}
         color={theme.text}
         placeHolderColor={theme.text}
-        type={"email"}
+        type={"default"}
       />
       <Button
         btnText={"Adicionar Cliente"}

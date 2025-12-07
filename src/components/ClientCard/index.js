@@ -41,6 +41,10 @@ export function ClientCard({ client, featherIcon, onPress }) {
         <Text style={[style.clientDataText, { color: theme.text }]}>Serviços: {services.length}</Text>
         <Text style={[style.clientDataText, { color: theme.text }]}>Ativos: {assets.length}</Text>
       </View>
+
+      <TouchableOpacity style={[style.clientDataTitle,{ alignItems:'flex-end' }]}>
+        <Feather name='trash' size={24} color={theme.primary}/>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
